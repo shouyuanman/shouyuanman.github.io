@@ -3,6 +3,7 @@ title: 怎么在 GitHub 上用 jekyll 搭建自己的博客
 date: 2024-12-07 20:40:10 +0800
 categories: [技术, 环境搭建手顺]
 tags: [jekyll, 博客建站]
+music-id: 393685
 ---
 
 ## 从 jekyll 和 jekyll-now 开始
@@ -198,5 +199,9 @@ _blog comment_
 ## 写博客
 
 参考[Writing a New Post](https://chirpy.cotes.page/posts/write-a-new-post/)，写第一篇博客吧。
+
+## 配置网站计数
+
+
 
 ## End 🌈🌈🌈

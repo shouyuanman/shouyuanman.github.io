@@ -3,6 +3,7 @@ title: OnlineDDL（在 MySQL 5.7 数据库里，InnoDB引擎，执行一条DDL�
 date: 2024-12-08 23:00:10 +0800
 categories: [架构, MySQL]
 tags: [MySQL]
+music-id: 187908
 ---
 
 ## Case

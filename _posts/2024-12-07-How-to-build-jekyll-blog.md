@@ -200,7 +200,91 @@ _blog comment_
 
 参考[Writing a New Post](https://chirpy.cotes.page/posts/write-a-new-post/)，写第一篇博客吧。
 
-## 配置网站计数
+## 给网站添加一些小插件
+
+先来看看功能效果图，
+
+![Desktop View](/assets/img/20241207/busuanzi_count_site.png){: width="400" height="200" }
+_效果图 1_
+
+![Desktop View](/assets/img/20241207/busuanzi_count_post.png){: width="400" height="200" }
+_效果图 2_
+
+### 统计并显示网站访问量
+`jekyll chirpy`主题中支持`goatcounter`计数器，貌似需要注册账号，本站没使用这种方式，而是选择了[不蒜子](https://busuanzi.ibruce.info/)计数，参考[不蒜子使用手册](https://ibruce.info/2015/04/04/busuanzi/)。
+
+1. **分别创建统计网站pv/uv、网页pv计数器**
+
+    ```html
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+
+    <!-- pv的方式，单个用户点击1篇文章，本篇文章记录1次阅读量 -->
+    本文总阅读量<em><span id="busuanzi_value_page_pv"></span>次</em>，
+    ```
+    {: file='page_pv.html' .nolineno }
+
+    ```html
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+
+    <!-- pv的方式，单个用户连续点击n篇文章，记录n次访问量 -->
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<em><span id="busuanzi_value_site_pv"></span>次</em>，
+    </span>
+
+    <!-- uv的方式，单个用户连续点击n篇文章，只记录1次访客数 -->
+    <span id="busuanzi_container_site_uv">
+    本站访客数<em><span id="busuanzi_value_site_uv"></span>人次</em>
+    </span>
+    ```
+    {: file='site_pv_uv.html' .nolineno }
+
+2. **分别把计数器添加到post、footer容器中**
+
+    ```html
+    <!-- ...... -->
+    <!-- busuanzi counter -->
+    {include page_pv.html content=content prompt=true lang=lang}
+    <!-- ...... -->
+    ```
+    {: file='post_case.html' .nolineno }
+
+    ```html
+    <!-- ...... -->
+    <p>
+    <!-- busuanzi counter -->
+        {include site_pv_uv.html content=content prompt=true lang=lang}
+    </p>
+    <!-- ...... -->
+    ```
+    {: file='footer_case.html' .nolineno }
+
+### 使用网易云音乐插件播放音乐
+1. **在includes目录创建cloud-music.html**
+
+    ```html
+    <!-- cloud music -->
+    <!-- auto=1 可以控制自动播放与否，当值为 1 即打开网页就自动播放，值为 0 时需要访客手动点击播放 -->
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86
+            src="https://music.163.com/outchain/player?type=2&id={{ page.music-id }}&auto=1&height=66">
+    </iframe>
+    ```
+    {: file='cloud-music.html' .nolineno }
+
+2. **把cloud-music.html嵌入post容器**
+
+    ```html
+    <!-- 添加网易云音乐插件 -->
+    {if page.music-id}
+    {include cloud-music.html}
+    {endif}
+    ```
+    {: file='post_case.html' .nolineno }
+
+3. **在md文件开头的配置项里添加 music-id: xxxxx**
+- `xxxxx`为网易云外链播放器的曲目`id`。
+
 
 
 

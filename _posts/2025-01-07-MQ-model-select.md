@@ -3,7 +3,7 @@ title: MQ选型
 date: 2025-01-07 10:42:15 +0800
 categories: [架构, MQ]
 tags: [MQ]
-music-id: 2116852179
+music-id: 1893658267
 ---
 
 ## **序言**

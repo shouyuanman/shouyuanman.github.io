@@ -80,13 +80,13 @@ music-id: 1808943074
 
 1. **LLM + 记忆 + 规划 + 工具 + 反馈**
 
-![Desktop View](/assets/img/20250418/agent_arch_t.png){: width="800" height="400" }
-_AI Agent 架构_
+    ![Desktop View](/assets/img/20250418/agent_arch_t.png){: width="800" height="400" }
+    _AI Agent 架构_
 
 2. **生物学角度理解**
 
-![Desktop View](/assets/img/20250418/agent_arch_b.jpg){: width="800" height="500" }
-_AI Agent 架构（生物学角度理解）_
+    ![Desktop View](/assets/img/20250418/agent_arch_b.jpg){: width="800" height="500" }
+    _AI Agent 架构（生物学角度理解）_
 
 ### **Agent为什么出现？**
 用户输入-`LLM`模型输出的模式，从功能看起来更像是一个大脑决策（任务规划）的角色，`AI Agent`是大语言模型能力的外延（`LLM`+插件+执行流程），大模型能力是有上限的，端到端虽然理想，但是复杂问题很难解决，`Agent`这种拆解形式，会更加流行。`AI Agent`让`LLM`具备目标实现能力，并通过自我激励循环来实现给定的目标。`LLM`与`LangChain`等工具相结合，释放了内容生成、编码和分析方面的多种可能性，目前在`ChatGPT`插件中比较有代表性的插件就是`code interpreter`。在通往`AGI`通用人工智能的路上，`AI Agent`是必经之路。
@@ -131,15 +131,15 @@ _AI Agent Planning 任务分解_
 - 将动作空间扩展为一个任务特定的离散动作和语言空间的组合，将推理和动作集成在`LLM`中，引导`LLM`如何输出和思考；
 - 融合`Reasoning`和`Acting`的一种`Prompt`范式，仅仅包含`thought-action-observation`步骤，很容易判断推理的过程的正确性。
 
-![Desktop View](/assets/img/20250418/agent_planning_react.png){: width="800" height="400" }
-_AI Agent Planning ReAct_
+    ![Desktop View](/assets/img/20250418/agent_planning_react.png){: width="800" height="400" }
+    _AI Agent Planning ReAct_
 
 2. Self-ask
 - 一种`follow-up`的使用范式，仅仅包含`follow-up`，`immediate answer`步骤；
 - `Self-ask`需要一个/少量`Prompt`来引导`LLM`如何回答`Prompt`问题。整个过程中，会大量的跟搜索引擎或向量知识库交互，不断地自我问答，来提升大语言模型（绿色背景为`LLM`输出，白色是`LLM`的输入，下划线为`Inference-time`）。
 
-![Desktop View](/assets/img/20250418/agent_planning_self_ask.png){: width="600" height="300" }
-_AI Agent Planning Self-ask_
+    ![Desktop View](/assets/img/20250418/agent_planning_self_ask.png){: width="500" height="250" }
+    _AI Agent Planning Self-ask_
 
 #### **工具 Tools**
 

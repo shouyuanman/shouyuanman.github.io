@@ -1,8 +1,8 @@
 ---
 title: OnlineDDL（在 MySQL 5.7 数据库里，InnoDB引擎，执行一条DDL会发生什么事情）
 date: 2024-12-08 23:00:10 +0800
-categories: [架构, MySQL]
-tags: [MySQL]
+categories: [后端, MySQL]
+tags: [后端, MySQL]
 music-id: 187908
 ---
 

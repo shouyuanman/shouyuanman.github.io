@@ -2,7 +2,7 @@
 title: AI Agent 元年，于 2025 开启
 date: 2025-04-18 15:46:00 +0800
 categories: [AI, Agent]
-tags: [AI, LLM, Agent]
+tags: [AI, Agent]
 music-id: 2688465841
 ---
 ## **序言**

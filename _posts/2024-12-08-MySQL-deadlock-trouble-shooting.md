@@ -1,8 +1,8 @@
 ---
 title: MySQL 死锁排查
 date: 2024-12-08 21:50:10 +0800
-categories: [架构, MySQL]
-tags: [MySQL]
+categories: [后端, MySQL]
+tags: [后端, MySQL]
 music-id: 393703
 ---
 

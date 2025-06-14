@@ -1,8 +1,8 @@
 ---
 title: ID生成器（简单实用型，适用于小规模应用）
 date: 2025-06-12 17:18:00 +0800
-categories: [架构, ID生成器]
-tags: [ID生成器]
+categories: [后端, ID生成器]
+tags: [后端, ID生成器]
 music-id: 2703621578
 ---
 
@@ -371,6 +371,7 @@ UNIQUE KEY `uk_biz_code` (`biz_code`) USING BTREE
 ```
 
 2. 应用层批量获取号段‌
+
 每次从数据库申请一个号段（如`[max_id + 1, max_id + step]`），更新`max_id`,
 ```sql
 UPDATE id_segment SET max_id = max_id + step WHERE biz_code = 'order_id';
@@ -378,6 +379,7 @@ UPDATE id_segment SET max_id = max_id + step WHERE biz_code = 'order_id';
 应用本地缓存该号段，内存中分配`ID`（无需重复访问`DB`）。
 
 3. ‌分库分表路由‌
+
 生成`ID`后，根据分片键（如用户`ID`哈希）路由到对应分片写入数据。
 
 4. ‌优化策略‌

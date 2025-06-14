@@ -1,8 +1,8 @@
 ---
 title: MQ怎么保证消息不丢失
 date: 2025-03-06 11:54:00 +0800
-categories: [架构, MQ]
-tags: [MQ]
+categories: [后端, MQ]
+tags: [后端, MQ]
 music-id: 1808943074
 ---
 

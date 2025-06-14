@@ -1,8 +1,8 @@
 ---
 title: 消息队列专有名词解释
 date: 2025-01-07 10:00:50 +0800
-categories: [架构, MQ]
-tags: [MQ]
+categories: [后端, MQ]
+tags: [后端, MQ]
 music-id: 1808229490
 ---
 

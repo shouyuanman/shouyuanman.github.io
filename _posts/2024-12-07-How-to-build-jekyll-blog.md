@@ -1,7 +1,7 @@
 ---
 title: 怎么在 GitHub 上用 jekyll 搭建自己的博客
 date: 2024-12-07 20:40:10 +0800
-categories: [技术, 环境搭建手顺]
+categories: [环境部署手顺, jekyll]
 tags: [jekyll, 博客建站]
 music-id: 393685
 ---

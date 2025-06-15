@@ -10,7 +10,7 @@ music-id: 2640293650
 意图识别，是自然语言处理（`NLP`）的一个分支领域——自然语言理解（`NLU`）/口语理解（`SLU`）。
 
 ![Desktop View](/assets/img/20250614/nlu_in_nlp.png){: width="600" height="600" }
-_NLP、NLU、NLG之间的关系_
+_NLP、NLU、NLG之间的关系（图片来自网络）_
 
 ## **理解——对话系统场景+意图识别**
 ### **举个例子**

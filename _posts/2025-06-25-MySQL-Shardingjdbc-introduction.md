@@ -827,23 +827,23 @@ if (each.endsWith(String.valueOf(shardingValue % 2))) {
 
 1. 这里是获得`ShardingValue`的地方，
 
-![Desktop View](/assets/img/20250625/hint_call_stack_chain_01.png){: width="500" height="300" }
-_获得ShardingValue_
+    ![Desktop View](/assets/img/20250625/hint_call_stack_chain_01.png){: width="500" height="300" }
+    _获得ShardingValue_
 
 2. 如果识别到`HintSharding`，就去`get`，
 
-![Desktop View](/assets/img/20250625/hint_call_stack_chain_02.png){: width="500" height="300" }
-_识别到HintSharding，就去get_
+    ![Desktop View](/assets/img/20250625/hint_call_stack_chain_02.png){: width="500" height="300" }
+    _识别到HintSharding，就去get_
 
 3. `getShardingValue`是直接根据`logicTable`从`HintManager`的`tableShardingValue`，
 
-![Desktop View](/assets/img/20250625/hint_call_stack_chain_03.png){: width="500" height="300" }
-_getShardingValue_
+    ![Desktop View](/assets/img/20250625/hint_call_stack_chain_03.png){: width="500" height="300" }
+    _getShardingValue_
 
 4. 可以看到`HintManager`是线程安全的。
 
-![Desktop View](/assets/img/20250625/hint_call_stack_chain_04.png){: width="500" height="300" }
-_HintManager是线程安全的_
+    ![Desktop View](/assets/img/20250625/hint_call_stack_chain_04.png){: width="500" height="300" }
+    _HintManager是线程安全的_
 
 运行观察分库分表的具体规则，如下，
 

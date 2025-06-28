@@ -41,6 +41,7 @@ music-id: 2622861949
 接下来，<font color="red">聚焦在Shardingjdbc原理上</font>。
 
 `Shardingjdbc`分库分表的大致流程，如下，
+- `SQL`解析 -> 查询优化 -> `SQL`路由 -> `SQL`改写 -> `SQL`执行 -> 结果归并（具体参见[shardingjdbc的数据分片-内核剖析-官方文档](https://shardingsphere.apache.org/document/4.1.0/cn/features/sharding/principle/)，包括解析引擎、路由引擎、改写引擎、执行引擎、归并引擎等）；
 - **分库分表**后，查询一条`sql`，先进行**数据源（库）路由**，再做**表路由**。在这个过程中，逻辑表会变成物理表，需要选择合适的**分片键**（`ShardingColumn`）、**分片策略**（`ShardingStrategy`）和**分片算法**（`ShardingAlgorithm`）。
 
 ## **Shardingjdbc相关名词解释**
@@ -1133,14 +1134,102 @@ tables:
 [main] INFO  ShardingSphere-SQL - Actual SQL: ds1 ::: SELECT a.* FROM `t_order_1` a left join `t_user_1` b on a.user_id=b.user_id  where  a.user_id=? ::: [704733680467685377]
 ```
 
-## **官方文档**
+## **附录**
 
-[shardingsphere 4.1.0 官方中文文档](https://shardingsphere.apache.org/document/4.1.0/cn/overview/)
+### **shardingjdbc的SQL执行流程**
+>回顾做`jdbc`开发时，涉及到了哪些接口？<br/>
+- 需要到`DataSource`，通过`DataSource`获取`Connection`；
+- 定义一条`SQL`，通过`Connection`获取`Prepared Statement`，执行`SQL`语句，关闭连接；
+- 这些都定义在`java.sql`基础包里边。
+{: .prompt-tip }
+
+`shardingjdbc`对原有的`DataSource`、`Connection`等接口扩展成`ShardingDataSource`、`ShardingConnection`，而对外暴露的分片操作接口与`JDBC`规范中所提供的接口完全一致，只要你熟悉`JDBC`就可以轻松应用`shardingjdbc`来实现分库分表。实际使用的时候，替换掉`shardingjdbc`的数据源就可以了。
+
+![Desktop View](/assets/img/20250625/shardingjdbc_position.png){: width="600" height="400" }
+_shardingjdbc流程关键类_
+
+`ShardingDataSource`继承自`AbstractDataSourceAdapter`，实现了`jdbc`的`DataSource`，这里用到了适配器模式。
+ 
+一张表经过分库分表后被拆分成多个子表，并分散到不同的数据库中，在不修改原业务 `SQL` 的前提下，`shardingjdbc`就必须对`SQL`进行一些改造才能正常执行。
+
+大致的执行流程如下图，
+
+![Desktop View](/assets/img/20250625/sharding_architecture_cn.png){: width="400" height="300" }
+_shardingjdbc执行流程（来自官方文档）_
+
+参考`shardingsphere`官方文档，`sql`语句会解析出一棵树，绿色是`sql`关键字，红色是`sql`中的变量，灰色是抽象的概念节点。
+
+![Desktop View](/assets/img/20250625/shardingjdbc_sql_parse.png){: width="600" height="400" }
+_shardingjdbc sql解析（来自官方文档）_
+
+为什么要抽象成语法树呢？因为后面要查询优化、`sql`改写，需要先打散，后拼装。
+
+`sql`改写的时候，是怎么知道要把逻辑`sql`中的逻辑表，改成成具体哪个物理表的呢？比如`t_user`改成`t_user_0`还是`t_user_1`呢？这就是`sql`路由的工作。
+
+
+### **shardingjdbc的SQL路由原理**
+`SQL`路由通过解析分片上下文，匹配到用户配置的分片策略，并生成路由路径。
+- 简单理解就是，可以根据我们配置的分片策略计算出`SQL`该在哪个库的哪个表中执行；
+- `SQL`路由又根据有无分片键，区分出**分片路由**和**广播路由**；
+- 路由规则，和`SQL`的类型有很大关系。
+
+>`SQL`大概有哪些类型？（`sql-parser-statement`）
+- `DQL`（`select`）
+- `DML`（`update`、`insert`、`modify`、`delete`）
+- `DDL`（`create`、`alter`、`drop`、`truncate`、`rename`、`comment`）
+- `DCL`（`grant`、`revoke`）
+- `TCL`（`commit`、`rollback`、`savePoint`、`setTransaction`）
+- `DAL`（`describe`、`Kill`、`repair`、`use`）
+{: .prompt-tip }
+
+有分片键的路由叫**分片路由**，细分为**直接路由**、**标准路由**和**笛卡尔积路由**这`3`种类型。
+
+无分片键的路由又叫做**广播路由**，可以划分为**全库表路由**、**全库路由**、 **全实例路由**、**单播路由**和**阻断路由**这`5`种类型。
+
+1. 标准路由
+- 在精准路由策略下有俩条件，运算符是等号，查询的是分片键；如果条件关键字是非分片键，就不是标准路由了。精准路由策略的结果是定位到单库单表。
+- 在范围路由下，和精准路由不一样的是，结果定位到多个分片，一条逻辑`sql`会转变为多个真实的`sql`来执行。
+- 两种场景，一种是单表查询，一种是多表查询，表和表之间是绑定表关系。
+
+2. 笛卡尔积路由
+- 专门针对多表查询来的，做多表查询，表和表之间不是绑定表关系，就会产生笛卡尔积路由。
+
+3. 单播路由
+- 虽然没有带分片键，现在要查询一个表的信息，比如查`t_order`表的数据，它有多个物理表，这时只会找一个分片去查一个表的数据结构（字段信息）。
+- 适合查询类的`DAL`。
+
+4. 全库路由
+- 在所有的数据源里边都执行一遍，只需要路由到库，不需要路由到表。
+- `TCL`（`set autocommit=0`）
+- 设置类`DAL`
+
+5. 全库表路由
+- 既要路由到库，又要路由到表
+- `DQL` & `DML` & `DDL`
+- 不带分片键，比如使用“用户名称”查询
+
+6. 全实例路由
+- 数据库实例级别的操作
+- `DCL`
+ 
+7. 阻断路由
+- 用来屏蔽`SQL`对数据库的操作
+- `use database;`
+- 这个命令不会在真实数据库中执行，因为`ShardingSphere`采⽤的是逻辑`Schema`（数据库的组织和结构）方式，所以无需将切换数据库的命令发送⾄真实数据库中。
+
+![Desktop View](/assets/img/20250625/shardingjdbc_route_type.png){: width="600" height="400" }
+_shardingjdbc路由分类（来自官方文档）_
+
+## **官方文档**
 
 [shardingsphere github](https://github.com/apache/shardingsphere)
 
 [shouyuanman/sharding-jdbc-demo](https://github.com/shouyuanman/apache-shardingsphere-4.1.0-src)
 
+[shardingsphere 4.1.0 官方中文文档](https://shardingsphere.apache.org/document/4.1.0/cn/overview/)
+
+[shardingjdbc的数据分片-内核剖析-官方文档](https://shardingsphere.apache.org/document/4.1.0/cn/features/sharding/principle/)
+
 [shardingsphere的sql有使用限制，需要注意-官方文档](https://shardingsphere.apache.org/document/4.1.0/cn/features/sharding/use-norms/sql/)
 
-[sharding-jdbc配置中心-官方文档](https://shardingsphere.apache.org/document/4.1.0/cn/features/orchestration/config-center/)
+[shardingjdbc配置中心-官方文档](https://shardingsphere.apache.org/document/4.1.0/cn/features/orchestration/config-center/)

@@ -37,6 +37,7 @@ social:
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
   name: ManShouyuan
   email: lanhuamsy@sina.com # change to your email address
+  fediverse_handle: # fill in your fediverse handle. E.g. "@username@domain.com"
   links:
     # The first element serves as the copyright owner's link
     # - https://twitter.com/username # change to your Twitter homepage
@@ -214,7 +215,7 @@ exclude:
   - README.md
   - LICENSE
   - purgecss.js
-  - rollup.config.js
+  - "*.config.js"
   - "package*.json"
 
 jekyll-archives:

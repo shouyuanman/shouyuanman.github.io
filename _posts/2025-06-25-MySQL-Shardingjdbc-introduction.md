@@ -83,7 +83,7 @@ music-id: 2622861949
 
 ## **准备测试数据**
 `t_user`拆分成`2`库`4`表，`t_order`拆分成`2`库`4`表，`t_config`作为广播表使用，
-![Desktop View](/assets/img/20250625/table_init.png){: width="300" height="200" }
+![Desktop View](/assets/images/20250625/table_init.png){: width="300" height="200" }
 _MySQL数据物料，仅供测试使用_
 
 ## **ShardingStrategy**
@@ -244,16 +244,16 @@ name='李四'
 
 测试插入数据，观察具体执行时的分片键和分片策略，如下，
 
-![Desktop View](/assets/img/20250625/inline_sharding_code_01.png){: width="600" height="400" }
+![Desktop View](/assets/images/20250625/inline_sharding_code_01.png){: width="600" height="400" }
 _InlineShardingStrategy 分片键_
 
-![Desktop View](/assets/img/20250625/inline_sharding_code_02.png){: width="600" height="400" }
+![Desktop View](/assets/images/20250625/inline_sharding_code_02.png){: width="600" height="400" }
 _InlineShardingStrategy 分库策略_
 
-![Desktop View](/assets/img/20250625/inline_sharding_code_03.png){: width="600" height="400" }
+![Desktop View](/assets/images/20250625/inline_sharding_code_03.png){: width="600" height="400" }
 _InlineShardingStrategy 分表策略_
 
-![Desktop View](/assets/img/20250625/inline_sharding_code_04.png){: width="600" height="400" }
+![Desktop View](/assets/images/20250625/inline_sharding_code_04.png){: width="600" height="400" }
 _InlineShardingStrategy_
 
 代码执行时的数据源、具体`ShardingRule`配置、基础属性配置等，打印如下，
@@ -299,10 +299,10 @@ sql.show: 'true'
 
 `DB`里边的数据，也符合预期。
 
-![Desktop View](/assets/img/20250625/inline_sharding_result_db_01.png){: width="200" height="100" }
+![Desktop View](/assets/images/20250625/inline_sharding_result_db_01.png){: width="200" height="100" }
 _InlineShardingStrategy分库1_
 
-![Desktop View](/assets/img/20250625/inline_sharding_result_db_02.png){: width="200" height="100" }
+![Desktop View](/assets/images/20250625/inline_sharding_result_db_02.png){: width="200" height="100" }
 _InlineShardingStrategy分库2_
 
 `InlineShardingStrategy`在使用时比较简单，不需要自定义分片算法，直接在配置文件中用`Groovy`表达式写规则，它支持对`SQL`语句中的`=`和`IN`的分片操作，但只支持单分片键。
@@ -464,16 +464,16 @@ shardingValue = 23 target = t_user_1  shardingValue.getValue() % 2) = 1
 
 观察具体执行时的分片键，以及`shardingValue`路由映射到的库表，如下，
 
-![Desktop View](/assets/img/20250625/standard_sharding_code_01.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250625/standard_sharding_code_01.png){: width="500" height="300" }
 _StandardShardingStrategy 分库路由 示例1_
 
-![Desktop View](/assets/img/20250625/standard_sharding_code_02.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250625/standard_sharding_code_02.png){: width="500" height="300" }
 _StandardShardingStrategy 分表路由 示例1_
 
-![Desktop View](/assets/img/20250625/standard_sharding_code_03.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250625/standard_sharding_code_03.png){: width="500" height="300" }
 _StandardShardingStrategy 分库路由 示例2_
 
-![Desktop View](/assets/img/20250625/standard_sharding_code_04.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250625/standard_sharding_code_04.png){: width="500" height="300" }
 _StandardShardingStrategy 分表路由 示例2_
 
 测试StandardSharding中范围分片的效果，
@@ -527,7 +527,7 @@ sql.show: 'true'
 
 注意，`StandardSharding`的结果，返回的是一个集合（不同于精准分片，返回的是一个值）。
 
-![Desktop View](/assets/img/20250625/standard_sharding_result_code.png){: width="600" height="400" }
+![Desktop View](/assets/images/20250625/standard_sharding_result_code.png){: width="600" height="400" }
 _StandardShardingStrategy 返回结果_
 
 ### **ComplexShardingStrategy**
@@ -703,7 +703,7 @@ sql.show: 'true'
 
 观察具体执行时的分片键，以及`shardingValue`路由映射到的库表，如下，
 
-![Desktop View](/assets/img/20250625/complex_sharding_strategy_result_code.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250625/complex_sharding_strategy_result_code.png){: width="500" height="300" }
 _ComplexShardingStrategy 返回结果_
 
 ### **HintShardingStrategy**
@@ -828,22 +828,22 @@ if (each.endsWith(String.valueOf(shardingValue % 2))) {
 
 1. 这里是获得`ShardingValue`的地方，
 
-    ![Desktop View](/assets/img/20250625/hint_call_stack_chain_01.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250625/hint_call_stack_chain_01.png){: width="500" height="300" }
     _获得ShardingValue_
 
 2. 如果识别到`HintSharding`，就去`get`，
 
-    ![Desktop View](/assets/img/20250625/hint_call_stack_chain_02.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250625/hint_call_stack_chain_02.png){: width="500" height="300" }
     _识别到HintSharding，就去get_
 
 3. `getShardingValue`是直接根据`logicTable`从`HintManager`的`tableShardingValue`，
 
-    ![Desktop View](/assets/img/20250625/hint_call_stack_chain_03.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250625/hint_call_stack_chain_03.png){: width="500" height="300" }
     _getShardingValue_
 
 4. 可以看到`HintManager`是线程安全的。
 
-    ![Desktop View](/assets/img/20250625/hint_call_stack_chain_04.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250625/hint_call_stack_chain_04.png){: width="500" height="300" }
     _HintManager是线程安全的_
 
 运行观察分库分表的具体规则，如下，
@@ -916,10 +916,10 @@ sql.show: 'true'
 
 观察`DB`数据，符合预期，
 
-![Desktop View](/assets/img/20250625/hint_result_db_01.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250625/hint_result_db_01.png){: width="500" height="300" }
 _HintShardingStrategy 分库1_
 
-![Desktop View](/assets/img/20250625/hint_result_db_02.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250625/hint_result_db_02.png){: width="500" height="300" }
 _HintShardingStrategy 分库2_
 
 ### **NoneShardingStrategy**
@@ -1042,10 +1042,10 @@ broadcastTables:
 [main] INFO  ShardingSphere-SQL - Actual SQL: ds1 ::: insert into t_config (status, id) values (?, ?) ::: [UN_KNOWN, 3]
 ```
 
-![Desktop View](/assets/img/20250625/broast_table_result_db_01.png){: width="200" height="200" }
+![Desktop View](/assets/images/20250625/broast_table_result_db_01.png){: width="200" height="200" }
 _广播表 分库1_
 
-![Desktop View](/assets/img/20250625/broast_table_result_db_02.png){: width="200" height="200" }
+![Desktop View](/assets/images/20250625/broast_table_result_db_02.png){: width="200" height="200" }
 _广播表 分库2_
 
 再看下查询，只路由到一个库，
@@ -1145,7 +1145,7 @@ tables:
 
 `shardingjdbc`对原有的`DataSource`、`Connection`等接口扩展成`ShardingDataSource`、`ShardingConnection`，而对外暴露的分片操作接口与`JDBC`规范中所提供的接口完全一致，只要你熟悉`JDBC`就可以轻松应用`shardingjdbc`来实现分库分表。实际使用的时候，替换掉`shardingjdbc`的数据源就可以了。
 
-![Desktop View](/assets/img/20250625/shardingjdbc_position.png){: width="600" height="400" }
+![Desktop View](/assets/images/20250625/shardingjdbc_position.png){: width="600" height="400" }
 _shardingjdbc流程关键类_
 
 `ShardingDataSource`继承自`AbstractDataSourceAdapter`，实现了`jdbc`的`DataSource`，这里用到了适配器模式。
@@ -1154,12 +1154,12 @@ _shardingjdbc流程关键类_
 
 大致的执行流程如下图，
 
-![Desktop View](/assets/img/20250625/sharding_architecture_cn.png){: width="400" height="300" }
+![Desktop View](/assets/images/20250625/sharding_architecture_cn.png){: width="400" height="300" }
 _shardingjdbc执行流程（来自官方文档）_
 
 参考`shardingsphere`官方文档，`sql`语句会解析出一棵树，绿色是`sql`关键字，红色是`sql`中的变量，灰色是抽象的概念节点。
 
-![Desktop View](/assets/img/20250625/shardingjdbc_sql_parse.png){: width="600" height="400" }
+![Desktop View](/assets/images/20250625/shardingjdbc_sql_parse.png){: width="600" height="400" }
 _shardingjdbc sql解析（来自官方文档）_
 
 为什么要抽象成语法树呢？因为后面要查询优化、`sql`改写，需要先打散，后拼装。
@@ -1217,7 +1217,7 @@ _shardingjdbc sql解析（来自官方文档）_
 - `use database;`
 - 这个命令不会在真实数据库中执行，因为`ShardingSphere`采⽤的是逻辑`Schema`（数据库的组织和结构）方式，所以无需将切换数据库的命令发送⾄真实数据库中。
 
-![Desktop View](/assets/img/20250625/shardingjdbc_route_type.png){: width="600" height="400" }
+![Desktop View](/assets/images/20250625/shardingjdbc_route_type.png){: width="600" height="400" }
 _shardingjdbc路由分类（来自官方文档）_
 
 ## **官方文档**

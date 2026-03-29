@@ -34,7 +34,7 @@ music-id: 2075511208
 ## **组织协作模式**
 ### **敏捷流程**
 
-![Desktop View](/assets/img/20250621/rd_flow.png){: width="800" height="600" }
+![Desktop View](/assets/images/20250621/rd_flow.png){: width="800" height="600" }
 _敏捷流程_
 
 ### **需求篇**
@@ -46,14 +46,14 @@ _敏捷流程_
 - **用户故事**，也称故事，是任务需求最清晰的、颗粒度最小的需求，一般要求在一个迭代周期内完成。当需求落到故事层级，敏捷团队就可以通过完成它实现价值交付，因此故事有时也被称为需求的最小可交付单位。
 - 如果说故事是最小可交付单位，那么**子任务**就是最小可执行单位，在`LigaAI`中以子任务或`Subtask`表示。它是用户故事的完成路径，是组成故事的具体工作事项；只有将若干个子任务全部完成，才能最终交付完整的用户故事。
 
-![Desktop View](/assets/img/20250621/epic.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250621/epic.png){: width="500" height="300" }
 _用户故事（图片来自网络）_
 
 ### **制度篇**
 #### **迭代周期制**
 拿双周迭代举例，看怎么把时间和角色融入到敏捷流程中。
 
-![Desktop View](/assets/img/20250621/todo_plan.png){: width="600" height="400" }
+![Desktop View](/assets/images/20250621/todo_plan.png){: width="600" height="400" }
 _进版计划示例_
 
 - **迭代周期定义**：每周二到下下周一；
@@ -96,7 +96,7 @@ _进版计划示例_
 
 #### **代码分支规范**
 
-![Desktop View](/assets/img/20250621/github_flow.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250621/github_flow.png){: width="500" height="300" }
 _GitLab协同工作流_
 
 - `master`分支：`master`为主分支，也是用于部署生产环境的分支，确保`master`分支稳定性，`master`分支一般由`release`以及`hotfix`分支合并，任何时间都不能直接修改代码；

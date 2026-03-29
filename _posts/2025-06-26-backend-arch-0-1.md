@@ -51,7 +51,7 @@ music-id: 2609985244
 
 以消息中台服务为例，
 
-![Desktop View](/assets/img/20250626/msg_arch_eg.png){: width="600" height="500" }
+![Desktop View](/assets/images/20250626/msg_arch_eg.png){: width="600" height="500" }
 _示例 整体架构图_
 
 ### **业务维度**
@@ -127,7 +127,7 @@ _示例 整体架构图_
 
 主要作用是反向代理（业务网关、四七层网关、`K8S`等）、流量分发、负载均衡，按照用户规模和流量（吞吐量）规模，接入层的架构方案不一样。
 
-![Desktop View](/assets/img/20250626/system_access_layer.png){: width="400" height="250" }
+![Desktop View](/assets/images/20250626/system_access_layer.png){: width="400" height="250" }
 _接入层_
 
 接入层组件介绍
@@ -175,7 +175,7 @@ _接入层_
 
 用户请求`1:1`的洞穿到`db`层，存在于传统的低并发、低性能、低可用项目中。
 
-![Desktop View](/assets/img/20250626/system_layer_straight_cylinder_type.png){: width="100" height="100" }
+![Desktop View](/assets/images/20250626/system_layer_straight_cylinder_type.png){: width="100" height="100" }
 _直筒型_
 
 >直筒型请求处理模型的适用场景——企业级应用。<br/>
@@ -189,7 +189,7 @@ _直筒型_
 
 用户的请求，从客户端到`db`层，层层递减，递减的程度视业务而定。例如当`10w`人去抢`100`个物品时，`db`层的请求在个位数量级`1000`以内，这就是比较理想的模型。
 
-![Desktop View](/assets/img/20250626/system_layer_funnel_type.png){: width="300" height="200" }
+![Desktop View](/assets/images/20250626/system_layer_funnel_type.png){: width="300" height="200" }
 _漏斗型_
 
 >漏斗型请求处理模型的适用场景——互联网应用（如秒杀）。<br/>
@@ -207,7 +207,7 @@ _漏斗型_
 
 以秒杀系统为例，来具体看下分层过滤的玩法。在秒杀系统中，请求分别经过`CDN`、`Nginx`、微服务（如库存、秒杀）和数据库这几层，
 
-![Desktop View](/assets/img/20250626/system_layer_funnel_type_2.png){: width="300" height="200" }
+![Desktop View](/assets/images/20250626/system_layer_funnel_type_2.png){: width="300" height="200" }
 _具体分层过滤Case_
 
 那么，
@@ -325,7 +325,7 @@ _具体分层过滤Case_
     update goods_order set status=#{status} where id=#{id} and status<#{status}
     ```
 
-![Desktop View](/assets/img/20250626/idempotence_solution.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250626/idempotence_solution.png){: width="500" height="300" }
 _如何保证幂等_
 
 >幂等性设计不能脱离业务来讨论，它和业务相关性更大些，是一个强业务性的方案设计。
@@ -526,7 +526,7 @@ _如何保证幂等_
 `MySQL`的连接数限制
 - `MySQL`默认配置的最大连接数是`151`。可以将最大连接数设置的最大值为`100000`。一般情况在`Linux`系统中建议设置为`500-1000`。
 - 参见[server-system-variables.html](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html)
-    ![Desktop View](/assets/img/20250626/mysql_max_connections.png){: width="800" height="400" }
+    ![Desktop View](/assets/images/20250626/mysql_max_connections.png){: width="800" height="400" }
     _mysql max connections_
 
 **`Redis`单机性能测试**
@@ -576,18 +576,18 @@ _如何保证幂等_
 - 测试时长：`5`分钟
 - `JVM`内存：`2G`
 
-![Desktop View](/assets/img/20250626/spring_cloud_gateway_jmeter_netty_work_8.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250626/spring_cloud_gateway_jmeter_netty_work_8.png){: width="500" height="300" }
 _`JMeter`报告_
 
-![Desktop View](/assets/img/20250626/spring_cloud_gateway_cpu_netty_work_8.jpg){: width="500" height="300" }
+![Desktop View](/assets/images/20250626/spring_cloud_gateway_cpu_netty_work_8.jpg){: width="500" height="300" }
 _`CPU`负载_
 
 `netty`工作线程数调整为（`reactor.netty.ioWorkerCount`）：`12`，压测结果如下，
 
-![Desktop View](/assets/img/20250626/spring_cloud_gateway_jmeter_netty_work_12.jpg){: width="500" height="300" }
+![Desktop View](/assets/images/20250626/spring_cloud_gateway_jmeter_netty_work_12.jpg){: width="500" height="300" }
 _`JMeter`报告_
 
-![Desktop View](/assets/img/20250626/spring_cloud_gateway_cpu_netty_work_12.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250626/spring_cloud_gateway_cpu_netty_work_12.png){: width="500" height="300" }
 _`CPU`负载_
 
 **消息队列MQ**
@@ -604,7 +604,7 @@ _`CPU`负载_
 
 #### **真实按照每一层的流量预估，做流量架构**
 
-![Desktop View](/assets/img/20250626/qps_arch.png){: width="600" height="200" }
+![Desktop View](/assets/images/20250626/qps_arch.png){: width="600" height="200" }
 _示例 流量预估_
 
 `10w` `qps`，刚开始肯定不会那么高，有可能一年达到，有可能两年。
@@ -649,10 +649,10 @@ _示例 流量预估_
 - 服务全部机房内自治，不进行跨机房访问。
 - 不同的机房，进行数据异步双向复制（为了数据最终一致性）。
 
-![Desktop View](/assets/img/20250626/gslb_arch.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250626/gslb_arch.png){: width="500" height="300" }
 _GSLB_
 
-![Desktop View](/assets/img/20250626/gslb_deploy_arch.png){: width="700" height="400" }
+![Desktop View](/assets/images/20250626/gslb_deploy_arch.png){: width="700" height="400" }
 _异地多活架构示例（图片来自网络）_
 
 #### **单元化**
@@ -665,14 +665,14 @@ _异地多活架构示例（图片来自网络）_
 
     当一个网站刀耕火种之际，往往是多机服务 + 单`MySQL DB`运行，这样我们一个服务迅速上线了。
 
-    ![Desktop View](/assets/img/20250626/unit_idc_single.png){: width="300" height="170" }
+    ![Desktop View](/assets/images/20250626/unit_idc_single.png){: width="300" height="170" }
     _单IDC 示例_
 
 2. 多机房容灾
 
     直到有一天，网站`IDC`的光纤被挖断了，网站停止了服务，连续可用天数戛然而止。在开了无数次会议之后，网站决定开启多机房，实现机房级容灾。
 
-    ![Desktop View](/assets/img/20250626/unit_idc_multi.png){: width="300" height="170" }
+    ![Desktop View](/assets/images/20250626/unit_idc_multi.png){: width="300" height="170" }
     _多机房容灾 示例_
 
     建两个机房，一个机房负责一部分用户，两个机房之间的`DB`进行异步的数据同步，如果一个机房被淹了，可以把这个机房的流量打到另一个机房，这叫做迁流。也有可能`DB3`的数据没有完全同步过来，比如消息队列的数据还没来得及插入到`DB3`，那么数据同步过程中，切过来的用户也是不能访问的，用不可访问的这段时间换取数据的强一致，同步完后再来访问。
@@ -686,7 +686,7 @@ _异地多活架构示例（图片来自网络）_
 
     炎热的夏季让整个城市停止了电力供应。网站又陷入了停滞，为了应对新的问题，城市级容灾的方案出现了。
 
-    ![Desktop View](/assets/img/20250626/unit_idc_multi_city.png){: width="300" height="170" }
+    ![Desktop View](/assets/images/20250626/unit_idc_multi_city.png){: width="300" height="170" }
     _异地多活 示例_
 
     在这样的架构设计下,城市`A`停电了，可以切流到城市`B`。对于跨`IDC`机房的数据访问，至少有一个数据异步复制完成，才能进行。牺牲一部分可用性换取强一致性。相对于同城容灾来说，只是数据复制的时间更长了，切流的时候，不可用的时间更长了。
@@ -695,7 +695,7 @@ _异地多活架构示例（图片来自网络）_
 
 所谓单元，是指一个能完成所有业务操作的自包含集合，在这个集合中包含了所有业务所需的所有服务，以及单元的数据分片。
 
-![Desktop View](/assets/img/20250626/unit_self_contain_set.png){: width="300" height="170" }
+![Desktop View](/assets/images/20250626/unit_self_contain_set.png){: width="300" height="170" }
 _单元是自包含集合_
 
 单元化是系统部署的方案，用多`AZ`(可用区，`Available Zone`)、`IDC`（数据中心）机房的实例来提供服务。在做异地多活时，一个地域形成完整的业务闭环（即在一个地域上，这个单元是可以独立可运行的），地域之间不依赖另外一个地域存活，脱离另一个单元，这个单元不会受到任何影响。单元化是垂直拆分的，根据用户`id`划分单元即可。在高可用场景下，系统做跨地域的部署，一般的系统用不到。
@@ -713,12 +713,12 @@ _单元是自包含集合_
 
 单元化架构就是把单元作为系统部署的基本单位，在全站所有`IDC`机房中部署数个单元。每个`IDC`机房里的单元数目不定，任意一个单元都部署了系统所需的所有的服务。任意一个单元的数据是首先拥有分片数据，但是为了切流的方便，最终需要拥有全量数据。如果不需要切流，或者切流到固定单元，那么其他单元则不需要有全量数据。
 
-![Desktop View](/assets/img/20250626/unit_idc_dist.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250626/unit_idc_dist.png){: width="500" height="300" }
 _单元在IDC的部署分布_
 
 传统意义上的`SOA`（服务化）架构，服务是分层的，每层的节点数量不尽相同，上层调用下层时，随机选择节点。单元化架构下，服务仍然是分层的，不同的是，每一层中的任意一个节点都属于且仅属于某一个单元，上层调用下层时，仅会选择本单元内的节点。这是单元化的意义。
 
-![Desktop View](/assets/img/20250626/unit_soa_arch.png){: width="400" height="250" }
+![Desktop View](/assets/images/20250626/unit_soa_arch.png){: width="400" height="250" }
 _SOA架构下的单元化_
 
 要做到单元化，必须要满足以下要求，
@@ -744,12 +744,12 @@ _SOA架构下的单元化_
 
     `API Router`是一个`HTTP`反向代理和负载均衡器，部署在公有云中作为`HTTP API`流量的入口，它能识别出流量的归属`shard`，并根据`shard`将流量转发到对应的`ezone`。`API Router`支持多种路由键，可以是地理位置，也可以是商户`ID`，订单`ID`等等，最终由`API Router`映射为统一的`Sharding ID`。
 
-    ![Desktop View](/assets/img/20250626/eleme_api_router.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250626/eleme_api_router.png){: width="500" height="300" }
     _路由分发服务（图片来自网络）_
 
     切流操作，把流量从一个单元，切到另一个单元，需要能随时按比例进行切流。切流是一个日常性的操作，例如对机房进行的大规模运维、升级等操作，都会先将流量切走。
 
-    ![Desktop View](/assets/img/20250626/unit_switch_flow.png){: width="400" height="250" }
+    ![Desktop View](/assets/images/20250626/unit_switch_flow.png){: width="400" height="250" }
     _单元化切流_
 
     目标单元的数据库必须有全量的数据。如果我们采用类似这样的架构，目标单元各有一套数据库，但他们之间的数据毫无重叠，那当需要切流的时候，再去迁移数据吗？这个显然是不对的，所以这一点实际上要求每个单元的数据库必须有全量的数据，这样才有切流的基础。
@@ -764,12 +764,12 @@ _SOA架构下的单元化_
 
     `Canal`可以伪装成一个`MySQL Slave`，接收`binlog`文件，获取到`MySQL Master`的数据变更，如图，
 
-    ![Desktop View](/assets/img/20250626/unit_data_canal.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250626/unit_data_canal.png){: width="500" height="300" }
     _Canal原理简图（图片来自网络）_
 
     `Otter`可以将`Canal`获取的数据，同步到目标数据库，如图，
 
-    ![Desktop View](/assets/img/20250626/unit_data_otter.png){: width="700" height="400" }
+    ![Desktop View](/assets/images/20250626/unit_data_otter.png){: width="700" height="400" }
     _Otter原理简图（图片来自网络）_
 
     `Canal+Otter`不仅可以实现同构数据的同步，还能实现异构数据的同步，同时会简化压缩要传输的`binlog`，减少网络压力，传输速度更快。
@@ -782,7 +782,7 @@ _SOA架构下的单元化_
 
     若要实现`Redis`的主主同步，需自己研发相应的插件，例如可以通过订阅`MySQL`的`binlog`日志来做缓存数据的同步。通过实现同步组件，监听`MySQL`的`binlog`并解析，将数据同步到两个机房的`Redis`集群中。如下图，
 
-    ![Desktop View](/assets/img/20250626/unit_data_middlwware.png){: width="400" height="250" }
+    ![Desktop View](/assets/images/20250626/unit_data_middlwware.png){: width="400" height="250" }
     _中间件数据同步方案，以Redis为例（图片来自网络）_
 
     该方案看起来还不错，但是它具有以下弊端，
@@ -794,7 +794,7 @@ _SOA架构下的单元化_
 #### **Case**
 下面基于私有云做部署架构。私有云不叫机房，叫可用区`zone`。假设有两个可用区在两个城市，比如北京、上海。
 
-![Desktop View](/assets/img/20250626/deploy_arch.png){: width="600" height="200" }
+![Desktop View](/assets/images/20250626/deploy_arch.png){: width="600" height="200" }
 _示例 流量预估_
 
 上游业务实际上会通过内网域名或者`K8S ServiceName`方式访问消息服务，这里我们只画了内网域名的接入层。

@@ -1293,7 +1293,7 @@ possible_keys: idx_fk_customer_id
 2 rows in set, 1 warning (0.00 sec)
 ```
 
-![Desktop View](/assets/img/20241218/MySQL_index_optimizer01.jpg){: width="500" height="300" }
+![Desktop View](/assets/images/20241218/MySQL_index_optimizer01.jpg){: width="500" height="300" }
 _执行计划中的所有列_
 
 `id`列，为执行的顺序，每个号码，表示一趟独立的查询，`id`列越大执行优先级越高，`id`相同则从上往下执行，`id`为`NULL`最后执行。
@@ -1308,7 +1308,7 @@ _执行计划中的所有列_
 - `UNIONRESULT`：从`union`临时表检索结果的`result`
     - `union`结果总是放在一个匿名临时表中，临时表不在`SQL`中出现，因此它的`id`是`NULL`。
 
-![Desktop View](/assets/img/20241218/MySQL_index_optimizer02.jpg){: width="500" height="300" }
+![Desktop View](/assets/images/20241218/MySQL_index_optimizer02.jpg){: width="500" height="300" }
 _执行计划 select_type value_
 
 `table`列，这一列表示`explain`的一行正在访问哪个表（用户操作的用户表，输出结果集的表）。
@@ -1325,7 +1325,7 @@ _执行计划 select_type value_
 
 性能优化的目标，得保证查询至少达到`range`级别，最好达到`ref`。
 
-![Desktop View](/assets/img/20241218/MySQL_index_optimizer03.jpg){: width="500" height="300" }
+![Desktop View](/assets/images/20241218/MySQL_index_optimizer03.jpg){: width="500" height="300" }
 _执行计划 type 列_
 
 `possible_keys`列，显示可能应用在这张表中的索引，一个或多个。查询涉及到的字段上若存在索引，则该索引将被列出，但不一定被查询实际使用。
@@ -1349,7 +1349,7 @@ _执行计划 type 列_
 - `Using index condition`：索引下推优化，查询的列不完全被索引覆盖，条件使用索引，是一个范围
 - `Using temporary`：`mysql`需要创建一张临时表来处理查询。
 
-![Desktop View](/assets/img/20241218/MySQL_index_optimizer04.jpg){: width="500" height="300" }
+![Desktop View](/assets/images/20241218/MySQL_index_optimizer04.jpg){: width="500" height="300" }
 _Extra列的常见值_
 
 ### **4. 通过show profile分析SQL**

@@ -71,7 +71,7 @@ possible_keys: NULL
 
 **客户端连接部分 → MySQL Server部分 → Service&Utilities部分 → SQL处理所需要的模块 → MySQL所支持的各个存储引擎 → 物理存储层**
 
-![Desktop View](/assets/img/20241218/MySQL_index_first_meeting01.jpg){: width="500" height="300" }
+![Desktop View](/assets/images/20241218/MySQL_index_first_meeting01.jpg){: width="500" height="300" }
 _MySQL体系结构_
 
 1. 客户端连接部分
@@ -95,7 +95,7 @@ _MySQL体系结构_
 
 **权限校验（如果命中缓存）→ 查询缓存 → 分析器 → 优化器 → 权限校验 → 执行器 → 引擎**
 
-![Desktop View](/assets/img/20241218/MySQL_index_first_meeting02.jpg){: width="500" height="300" }
+![Desktop View](/assets/images/20241218/MySQL_index_first_meeting02.jpg){: width="500" height="300" }
 _select执行轨迹_
 
 1. 客户端通过`CS`通信协议和`MySQL`建立连接，
@@ -111,7 +111,7 @@ _select执行轨迹_
 
 `MySQL 5.6`之前，默认存储引擎是`MyISAM`；`5.6`之后，改成了`InnoDB`。
 
-![Desktop View](/assets/img/20241218/MySQL_index_first_meeting03.jpg){: width="250" height="150" }
+![Desktop View](/assets/images/20241218/MySQL_index_first_meeting03.jpg){: width="250" height="150" }
 _MySQL存储引擎_
 
 #### **常见存储引擎的功能特性**
@@ -122,7 +122,7 @@ _MySQL存储引擎_
 
 `Memory`使用存在于内存中的内容创建表，访问表非常快，由于内存特性，表中的数据容易丢失。
 
-![Desktop View](/assets/img/20241218/MySQL_index_first_meeting04.jpg){: width="500" height="300" }
+![Desktop View](/assets/images/20241218/MySQL_index_first_meeting04.jpg){: width="500" height="300" }
 _常见存储引擎功能特性_
 
 #### **常见存储引擎的存储特性**

@@ -19,10 +19,10 @@ music-id: 393703
 
 ### 查服务日志和 MySQL 死锁日志，定位死锁发生地
 
-![Desktop View](/assets/img/20241208/deadlock_es_log.png){: width="750" height="450" }
+![Desktop View](/assets/images/20241208/deadlock_es_log.png){: width="750" height="450" }
 _es死锁日志_
 
-![Desktop View](/assets/img/20241208/deadlock_mysql_log.jpg){: width="750" height="450" }
+![Desktop View](/assets/images/20241208/deadlock_mysql_log.jpg){: width="750" height="450" }
 _mysql死锁日志_
 
 ### 分析代码，定位死锁原因
@@ -33,13 +33,13 @@ _mysql死锁日志_
 
 - 一般死锁都是因为多个事务并发操作数据库造成的，确定数据库隔离级别：RR；本地安装 MySQL，构造死锁测试数据（数据纯属构造，如有雷同，纯属巧合），去复现下，
 
-    ![Desktop View](/assets/img/20241208/deadlock_mysql_test_table.jpg){: width="750" height="450" }
+    ![Desktop View](/assets/images/20241208/deadlock_mysql_test_table.jpg){: width="750" height="450" }
     _mysql表测试数据_
 
-    ![Desktop View](/assets/img/20241208/deadlock_mysql_test_table_index.jpg){: width="750" height="450" }
+    ![Desktop View](/assets/images/20241208/deadlock_mysql_test_table_index.jpg){: width="750" height="450" }
     _mysql表测试索引_
 
-    ![Desktop View](/assets/img/20241208/deadlock_mysql_test_table_case.jpg){: width="750" height="450" }
+    ![Desktop View](/assets/images/20241208/deadlock_mysql_test_table_case.jpg){: width="750" height="450" }
     _mysql死锁测试case_
 
 - 注：`1235905358376715619`，比它小一个的是`1235697761479571791`，比它大一个的是`1242077848279131794`。
@@ -54,12 +54,12 @@ _mysql死锁日志_
 
 3. 此时我们需要做的操作就是让事务一在`1235697761479571791`-`1242077848279131794`之间插入或更新数据，会发现此时事务已经被阻塞，无法执行insert/update，因为事务二已经对该区间加了间隙锁；
 
-    ![Desktop View](/assets/img/20241208/deadlock_mysql_test_table_lock.jpg){: width="750" height="450" }
+    ![Desktop View](/assets/images/20241208/deadlock_mysql_test_table_lock.jpg){: width="750" height="450" }
     _mysql表-间隙锁_
 
 4. 在事务一等待锁的同时，让事务二同时在 1235697761479571791-1242077848279131794 之间插入数据，这个时候会发现，只要事务二一旦执行 insert/update，立即报了死锁。
 
-    ![Desktop View](/assets/img/20241208/deadlock_mysql_test_table_result.jpg){: width="750" height="450" }
+    ![Desktop View](/assets/images/20241208/deadlock_mysql_test_table_result.jpg){: width="750" height="450" }
     _死锁发生地_
 
 ## 总结

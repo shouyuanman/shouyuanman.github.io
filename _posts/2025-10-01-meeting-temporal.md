@@ -8,7 +8,7 @@ music-id: 31514407
 
 ## **印象——Temporal**
 
-![Desktop View](/assets/img/20250930/temporal_icon.png){: width="700" height="400" }
+![Desktop View](/assets/images/20250930/temporal_icon.png){: width="700" height="400" }
 
 `Temporal`是一个开源的分布式工作流编排框架，用于构建可靠、可扩展的分布式应用。它源自`Uber`的`Cadence`项目，由原核心团队于`2019`年创建，已成为云原生工作流编排的事实标准。
 
@@ -73,7 +73,7 @@ Temporal is a durable execution platform that enables developers to build scalab
 ## **理解——编排本质**
 要理解编排，可以借助和`Orchestration`对应的另一个概念：`Choreography`。
 
-![Desktop View](/assets/img/20250930/orchestration_vs_choreography.png){: width="700" height="400" }
+![Desktop View](/assets/images/20250930/orchestration_vs_choreography.png){: width="700" height="400" }
 _choreography .vs. orchestration（图片来自网络）_
 
 看图理解下`Choreography`，
@@ -180,7 +180,7 @@ _choreography .vs. orchestration（图片来自网络）_
 3. `Starter`创建一个工作流，封装参数，调用`sdk`的`api`发送到`Temporal Server`；
 4. `Worker`拉取到工作流开始逻辑处理。
 
-![Desktop View](/assets/img/20250930/temporal_data_flow.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250930/temporal_data_flow.png){: width="500" height="300" }
 _Temporal 具体流程（图片来自网络）_
 
 ### **Workflow中编排的Activity是怎么执行的？**
@@ -202,10 +202,10 @@ _Temporal 具体流程（图片来自网络）_
 
 ### **Temporal部署架构**
 
-![Desktop View](/assets/img/20250930/deploy_self_hosted_temporal_service.png){: width="700" height="400" }
+![Desktop View](/assets/images/20250930/deploy_self_hosted_temporal_service.png){: width="700" height="400" }
 _Connect your application instances to your self-hosted Temporal Service（来自官方文档）_
 
-![Desktop View](/assets/img/20250930/deploy_temporal_cloud.png){: width="700" height="400" }
+![Desktop View](/assets/images/20250930/deploy_temporal_cloud.png){: width="700" height="400" }
 _Connect your application instances to Temporal Cloud（来自官方文档）_
 
 具体参见[Temporal生产环境部署手册](https://docs.temporal.io/production-deployment)
@@ -219,7 +219,7 @@ _Connect your application instances to Temporal Cloud（来自官方文档）_
 - `Worker service`: `for internal background workflows`
 例如，在实际生产部署中，每个集群可以有`5`个`Frontend`、`15`个`History`、`17`个`Matching`和`3`个`Worker`服务。
 
-![Desktop View](/assets/img/20250930/temporal_service.png){: width="700" height="400" }
+![Desktop View](/assets/images/20250930/temporal_service.png){: width="700" height="400" }
 _Temporal Service（来自官方文档）_
 
 `Temporal`服务可以独立运行，也可以在一个或多个物理或虚拟机上组合成共享进程。对于实时(生产)环境，建议每个服务独立运行，因为每个服务都有不同的伸缩需求，并且故障排除变得更容易。`History`、`Matching`和`Worker`服务可以在集群内可以水平扩展，`Frontend`服务的可伸缩性与其他服务不同，因为它没有分片/分区，只是无状态的。
@@ -249,7 +249,7 @@ _Temporal Service（来自官方文档）_
 
 它使用`6933`端口进行成员相关的通信
 
-![Desktop View](/assets/img/20250930/temporal_frontend_service.png){: width="700" height="400" }
+![Desktop View](/assets/images/20250930/temporal_frontend_service.png){: width="700" height="400" }
 _Temporal Frontend Service（来自官方文档）_
 
 ##### **History Service**
@@ -269,7 +269,7 @@ _Temporal Frontend Service（来自官方文档）_
 
 它使用`6934`端口进行成员相关的通信。
 
-![Desktop View](/assets/img/20250930/temporal_history_service.png){: width="700" height="400" }
+![Desktop View](/assets/images/20250930/temporal_history_service.png){: width="700" height="400" }
 _Temporal History Service（来自官方文档）_
 
 ##### **Matching Service**
@@ -283,7 +283,7 @@ _Temporal History Service（来自官方文档）_
 
 它使用`6935`端口进行成员相关的通信。
 
-![Desktop View](/assets/img/20250930/temporal_matching_service.png){: width="700" height="400" }
+![Desktop View](/assets/images/20250930/temporal_matching_service.png){: width="700" height="400" }
 _Temporal Matching Service（来自官方文档）_
 
 ##### **Worker Service**
@@ -296,7 +296,7 @@ _Temporal Matching Service（来自官方文档）_
 
 它使用`6939`端口进行成员相关的通信。
 
-![Desktop View](/assets/img/20250930/temporal_worker_service.png){: width="700" height="400" }
+![Desktop View](/assets/images/20250930/temporal_worker_service.png){: width="700" height="400" }
 _Temporal Worker Service（来自官方文档）_
 
 #### **Database 持久化**
@@ -312,7 +312,7 @@ _Temporal Worker Service（来自官方文档）_
 - Namespace元数据：集群中各Namespace的元数据。
 - 可见性数据：允许“显示所有正在运行的工作流执行”这样的操作。 对于生产环境，建议使用ElasticSearch。
 
-![Desktop View](/assets/img/20250930/temporal_persistent.png){: width="700" height="400" }
+![Desktop View](/assets/images/20250930/temporal_persistent.png){: width="700" height="400" }
 _Temporal Database持久化（来自官方文档）_
 
 #### **Visibility 可视化**
@@ -517,7 +517,7 @@ networks:
 ```
 
 >注：`Temporal Server`连接`MySQL`需要使用的连接信息，参见[SQL Configuration](https://docs.temporal.io/references/configuration#sql)。
-![Desktop View](/assets/img/20250930/temporal_mysql_config_info.png){: width="800" height="500" }
+![Desktop View](/assets/images/20250930/temporal_mysql_config_info.png){: width="800" height="500" }
 _Temporal MySQL Connection Config（来自官方文档）_
 {: .prompt-tip }
 
@@ -1000,21 +1000,21 @@ INSERT INTO `temporal_visibility`.`schema_update_history` (version_partition, ye
 |TEMPORAL_ADMINTOOLS_VERSION|~~<font color="red">1.23.1</font>~~|
 |TEMPORAL_UI_VERSION|2.26.2|
 
-![Desktop View](/assets/img/20250930/appendix_a_pic.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250930/appendix_a_pic.png){: width="500" height="300" }
 _上述组件版本，启动报错_
 
 `TEMPORAL_ADMINTOOLS_VERSION`改成`1.23.0`后，正常启动，但`BatchOperation`功能页不可用。
 
 |TEMPORAL_ADMINTOOLS_VERSION|<font color="red">1.23.0</font>|
 
-![Desktop View](/assets/img/20250930/appendix_a_batch_operation_error.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250930/appendix_a_batch_operation_error.png){: width="500" height="300" }
 _BatchOperation功能页不可用_
 
 MYSQL_VERSION改成v8，BatchOperation没有问题。
 
 |MYSQL_VERSION|<font color="red">8</font>|
 
-![Desktop View](/assets/img/20250930/appendix_a_batch_operation.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250930/appendix_a_batch_operation.png){: width="500" height="300" }
 _BatchOperation功能正常_
 
 ##### **B. Temporal 1.23.0使用MySQL 5.7，遇到的问题**
@@ -1049,7 +1049,7 @@ _BatchOperation功能正常_
 |TEMPORAL_VERSION|1.22.0|
 |EMPORAL_UI_VERSION|2.17.1|
 
-![Desktop View](/assets/img/20250930/appendix_e_pic.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250930/appendix_e_pic.png){: width="500" height="300" }
 _功能正常，缺少BatchOperation功能_
 
 ##### **F. Temporal 1.21.0使用MySQL 5.7**
@@ -1058,7 +1058,7 @@ _功能正常，缺少BatchOperation功能_
 |TEMPORAL_VERSION|1.21.0|
 |TEMPORAL_UI_VERSION|2.16.1|
 
-![Desktop View](/assets/img/20250930/appendix_f_pic.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250930/appendix_f_pic.png){: width="500" height="300" }
 _功能正常，功能较少，没有Schedules功能页_
 
 ### **部署运行**
@@ -1452,7 +1452,7 @@ Search attributes have been added
 
 打开页面 http://localhost:8080/namespaces/default/workflows，如下，
 
-![Desktop View](/assets/img/20250930/temporal_server_run.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250930/temporal_server_run.png){: width="500" height="300" }
 _temporal 首页效果图_
 
 #### **4. 写测试用例，或者加断点Debug代码。**
@@ -1464,7 +1464,7 @@ _temporal 首页效果图_
 ## **外围——Temporal SDK**
 `Temporal`支持多种语言的`SDK`，比如`go`、`java`、`python`、`ruby`、`php`、`typescript`等，本文主要以`go`和`java` `sdk`为例，来看下使用姿势。
 
-![Desktop View](/assets/img/20250930/temporal_sdk.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250930/temporal_sdk.png){: width="500" height="300" }
 _temporal sdk_
 
 ### **Temporal Java SDK**
@@ -1534,30 +1534,30 @@ _temporal sdk_
 
 4. 执行完成
 
-    ![Desktop View](/assets/img/20250930/temporal_go_sdk_result.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250930/temporal_go_sdk_result.png){: width="500" height="300" }
     _temporal go sample 运行效果图_
 
 5. 查看执行历史
 
     [view history link](http://localhost:8080/namespaces/default/workflows/hello_world_workflowID/01987469-9325-7800-9822-7dab474b00c3/history)
 
-    ![Desktop View](/assets/img/20250930/temporal_go_sdk_history_all.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250930/temporal_go_sdk_history_all.png){: width="500" height="300" }
     _sample all history_
-    ![Desktop View](/assets/img/20250930/temporal_go_sdk_history_compact.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250930/temporal_go_sdk_history_compact.png){: width="500" height="300" }
     _sample compact history_
 
 6. 查看执行时的`workers`——`hello_world_workflowID`
 
     [view workers link](http://localhost:8080/namespaces/default/workflows/hello_world_workflowID/01987469-9325-7800-9822-7dab474b00c3/workers)
 
-    ![Desktop View](/assets/img/20250930/temporal_go_sdk_worker.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250930/temporal_go_sdk_worker.png){: width="500" height="300" }
     _sample worker_
 
 7. 查看`Task Queue`——`hello-world`
 
     [view task queue link](http://localhost:8080/namespaces/default/task-queues/hello-world)
 
-    ![Desktop View](/assets/img/20250930/temporal_go_sdk_task_queue.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250930/temporal_go_sdk_task_queue.png){: width="500" height="300" }
     _sample task queue_
 
 ## **欣赏——Temporal亮点和局限性**
@@ -1733,25 +1733,25 @@ _temporal sdk_
 
 1. 访问`localhost:8081`，打开`Temporal DSL`可视化的界面
 
-    ![Desktop View](/assets/img/20250930/swtemporal_workflow_define.png){: width="500" height="300" }
-    ![Desktop View](/assets/img/20250930/swtemporal_workflow_run.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250930/swtemporal_workflow_define.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250930/swtemporal_workflow_run.png){: width="500" height="300" }
 
 2. 查看`Temporal Server`中对应的结果，`Temporalio UI 2.26.2`版本的效果图如下，
 
-    ![Desktop View](/assets/img/20250930/swtemporal_workflow_run_result_01.png){: width="500" height="300" }
-    ![Desktop View](/assets/img/20250930/swtemporal_workflow_run_result_02.png){: width="500" height="300" }
-    ![Desktop View](/assets/img/20250930/swtemporal_workflow_run_result_03.png){: width="500" height="300" }
-    ![Desktop View](/assets/img/20250930/swtemporal_workflow_run_result_04.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250930/swtemporal_workflow_run_result_01.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250930/swtemporal_workflow_run_result_02.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250930/swtemporal_workflow_run_result_03.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250930/swtemporal_workflow_run_result_04.png){: width="500" height="300" }
 
 ### **可视化流程设计——用 ReactFlow UI 生成 Temporal DSL**
 前端可视化主流方案包括`ReactFlow`、`VueFlow`等，`UI`这里可以选型`ReactFlow`通过拖拉拽控件的方式生成上述`DSL`。效果图如下，
 
-![Desktop View](/assets/img/20250930/reactflow_example.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250930/reactflow_example.png){: width="500" height="300" }
 
 ## **升华——一站式应用示例**
 至此，通过选型`ReactFlow UI + DSL + Temporal Service`，把这套架构融合到自己的系统中，就形成了一站式分布式工作流编排解决方案。
 
-![Desktop View](/assets/img/20250930/temporal_task_arch.png){: width="500" height="300" }
+![Desktop View](/assets/images/20250930/temporal_task_arch.png){: width="500" height="300" }
 
 ## **总结**
 1. 控制模式‌

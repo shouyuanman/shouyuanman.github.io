@@ -9,7 +9,7 @@ music-id: 2640293650
 ## **定位**
 意图识别，是自然语言处理（`NLP`）的一个分支领域——自然语言理解（`NLU`）/口语理解（`SLU`）。
 
-![Desktop View](/assets/img/20250614/nlu_in_nlp.png){: width="600" height="600" }
+![Desktop View](/assets/images/20250614/nlu_in_nlp.png){: width="600" height="600" }
 _NLP、NLU、NLG之间的关系（图片来自网络）_
 
 ## **理解——对话系统场景+意图识别**
@@ -106,7 +106,7 @@ _NLP、NLU、NLG之间的关系（图片来自网络）_
 
 单轮意图识别中，意图和槽位按需输出使用即可。如果场景不需要信息抽取，只需判断用户意图即可用于后续处理，就不用填充槽位。如若需要信息抽取，可以按照`SMP2019`数据集格式给出`slot`槽位的内容。
 
-![Desktop View](/assets/img/20250614/eg_smp_2019.png){: width="250" height="200" }
+![Desktop View](/assets/images/20250614/eg_smp_2019.png){: width="250" height="200" }
 _SMP2019数据集样例_
 
 另外，意图识别数据需要不断的收集与维护，初始数据集不用很多，但要在项目中做好数据采集与清洗，定期进行模型训练并更新，对于一些`bad case`需要人为判断缺陷并改善数据集中的类似`case`，正确率才会越来越高。
@@ -116,7 +116,7 @@ _SMP2019数据集样例_
 
 在对话系统`pipeline`中，仅使用当前`query`往往不一定能给出整个多轮对话的正确意图，还需要查看历史的对话信息。多轮意图识别系统需要能够及时捕捉到这种意图的转变，并准确理解每个意图在整个对话流程中的作用，可以基于上下文槽位来关联。
 
-![Desktop View](/assets/img/20250614/rasa_pipeline.png){: width="600" height="500" }
+![Desktop View](/assets/images/20250614/rasa_pipeline.png){: width="600" height="500" }
 _智能对话系统pipeline（从rasa中抽象得出）_
 
 - NLU模块，对用户的`utterance`进行理解，包括意图识别和槽位填充。例如：

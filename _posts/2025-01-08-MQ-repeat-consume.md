@@ -101,7 +101,7 @@ music-id: 2648283822
 
     受到`Chandy-Lamport`分布式快照算法启发，流处理应用中每个算子的所有状态周期性`checkpointed`。如果系统发生了故障，每个算子的所有状态都回滚到最近的全局一致检查点处。在回滚过程中，所有处理都暂停。`Sources`也会根据最近的检查点重置到正确的`offset`。整个流处理应用基本上倒回到最近的一致性状态，处理也可以从这个状态重新开始。
 
-    ![Desktop View](/assets/img/20250203/exactly_once_checkpoint.png){: width="500" height="500" }
+    ![Desktop View](/assets/images/20250203/exactly_once_checkpoint.png){: width="500" height="500" }
     _分布式快照机制_
 
     在这个例子中，
@@ -114,7 +114,7 @@ music-id: 2648283822
 
     重放失败事件，尝试重复处理，在每个算子上，在事件进入到用户定义的逻辑之前删除重复事件。该机制要为每个算子维护一份事务日志（`transaction log`）来记录哪些事件已经处理过了，使用类似机制的引擎有`Google MillWheel2`、`Apache Kafka Streams`。
 
-    ![Desktop View](/assets/img/20250203/exactly_once_at_least_once_plus_deduplication.png){: width="560" height="280" }
+    ![Desktop View](/assets/images/20250203/exactly_once_at_least_once_plus_deduplication.png){: width="560" height="280" }
     _At Least Once + 消息去重_
 
 3. **分布式快照** _vs_ **`At Least Once` + 消息去重**

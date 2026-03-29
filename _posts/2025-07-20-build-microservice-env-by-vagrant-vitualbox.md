@@ -224,10 +224,10 @@ Linux cdh2 3.10.0-327.4.5.el7.x86_64 #1 SMP Mon Jan 25 22:07:14 UTC 2016 x86_64 
 
 8. 看下效果；
 
-    ![Desktop View](/assets/img/20250720/virtualbox_result.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250720/virtualbox_result.png){: width="500" height="300" }
     _VirtualBox 效果图_
 
-    ![Desktop View](/assets/img/20250720/mobaxterm_result.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250720/mobaxterm_result.png){: width="500" height="300" }
     _ssh 效果图_
 
 9. 安装配置好分布式微服务开发环境后，可以**打包备份成镜像**（方便移植分享）。这个过程需先关闭虚拟机，会耗费一点时间，耐心等待下。
@@ -408,7 +408,7 @@ Get https://registry-1.docker.io/v2/: context deadline exceeded (Client.Timeout 
 
     - 看效果
 
-    ![Desktop View](/assets/img/20250720/virtualbox_add_new_disk.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250720/virtualbox_add_new_disk.png){: width="500" height="300" }
     _VirtualBox增加新磁盘 效果图_
 
 3. **`/dev/sdb`创建后，可以进行磁盘分区了**
@@ -531,7 +531,7 @@ Get https://registry-1.docker.io/v2/: context deadline exceeded (Client.Timeout 
 
 10. **`vagrant`打包成新镜像，新镜像初始化后，再次用`vagrant`启动时，就没必要加第二步的磁盘挂载代码了。**
 
-    ![Desktop View](/assets/img/20250720/virtualbox_add_new_disk_final.png){: width="500" height="300" }
+    ![Desktop View](/assets/images/20250720/virtualbox_add_new_disk_final.png){: width="500" height="300" }
     _VirtualBox增加新磁盘 效果图_
 
 ## **硬盘扩容（不删除原数据）**
@@ -656,20 +656,20 @@ tmpfs                    783M     0  783M   0% /run/user/0
     $ ren ./resized-disk001.vmdk ./box-disk001.vmdk
     ```
 
-    ![Desktop View](/assets/img/20250720/vbox_resize_files.png){: width="600" height="500" }
+    ![Desktop View](/assets/images/20250720/vbox_resize_files.png){: width="600" height="500" }
     _vbox 扩容中间产物 图示_
 
     载入上面创建好的新硬盘，有两个文件要修改，`.box`配置文件和`VirtualBox.xml`配置文件，修改之前需要关闭`VirtualBox`进程，否则`UUID`修改不成功。
     - /virtual/boxes/cdh1/cdh1.vbox（替换新磁盘的`UUID`）
     - ~/.VirtualBox/VirtualBox.xml（删除中间生成的产物`MediaRegistry`）
 
-    ![Desktop View](/assets/img/20250720/vbox_resize_loadfile_01.png){: width="600" height="500" }
+    ![Desktop View](/assets/images/20250720/vbox_resize_loadfile_01.png){: width="600" height="500" }
     _.box配置文件修改1 图示_
 
-    ![Desktop View](/assets/img/20250720/vbox_resize_loadfile_02.png){: width="600" height="500" }
+    ![Desktop View](/assets/images/20250720/vbox_resize_loadfile_02.png){: width="600" height="500" }
     _.box配置文件修改2 图示_
 
-    ![Desktop View](/assets/img/20250720/vbox_resize_loadfile_03.png){: width="600" height="500" }
+    ![Desktop View](/assets/images/20250720/vbox_resize_loadfile_03.png){: width="600" height="500" }
     _VirtualBox.xml配置文件（注册中心）修改 图示_
 
     重启虚拟机（`reboot`，或者`vagrant reload`），并添加分区。

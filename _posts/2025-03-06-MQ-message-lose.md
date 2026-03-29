@@ -13,7 +13,7 @@ music-id: 1808943074
 主流`MQ`都提供了保证消息可靠性的机制，在消息传递过程中，即使发生网络中断或者宕机，也能做到不丢消息。要做到这一点，得**先知道消息从生产到消费过程中，哪些地方可能丢消息，才能知道`MQ`怎么避免丢消息**。
 
 ## **一条MQ消息的生命周期**
-![Desktop View](/assets/img/20250306/mq_msg_flow_simply.png){: width="400" height="200" }
+![Desktop View](/assets/images/20250306/mq_msg_flow_simply.png){: width="400" height="200" }
 _MQ消息传输流程简图_
 
 一条消息的生命周期分为生产、存储、消费三个阶段。
@@ -129,7 +129,7 @@ consumer.subscribe("RetryQueue", "*");
 
 ### **RocketMQ实现消息不丢失的步骤**
 
-![Desktop View](/assets/img/20250306/rocketmq_msg_analysis.png){: width="800" height="600" }
+![Desktop View](/assets/images/20250306/rocketmq_msg_analysis.png){: width="800" height="600" }
 _RocketMQ消息可靠性分析_
 
 #### **生产者端配置**

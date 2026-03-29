@@ -15,7 +15,7 @@ music-id: 442503037
 
 首先看到的是，业务流量激增，
 
-![Desktop View](/assets/img/20260328/biz_qps_surge_01.png){: width="300" height="150" }
+![Desktop View](/assets/images/20260328/biz_qps_surge_01.png){: width="300" height="150" }
 _业务请求量激增_
 
 相应地，会直接带来机器负载升高，应用`gc`压力增大，甚至还会导致依赖的下游服务或者存储中间件耗时增加，可以调取观察机器负载（比如`CPU`、内存、网络、磁盘等）、`JVM`、外部调用及耗时指标监控，直观地获取服务运行状况的第一手资料。
@@ -24,15 +24,15 @@ _业务请求量激增_
 | 服务`2C4G`小型配置 |
 | `CPU`、内存相对敏感 |
 | :------------- | :------------- | :------------- |
-| ![Desktop View](/assets/img/20260328/machine_cpu_01.png){: width="500" height="300" } | ![Desktop View](/assets/img/20260328/machine_memory_01.png){: width="500" height="300" } | ![Desktop View](/assets/img/20260328/machine_core_per_minute_01.png){: width="500" height="300" } |
-| ![Desktop View](/assets/img/20260328/machine_disk_rw_01.png){: width="500" height="300" } | ![Desktop View](/assets/img/20260328/machine_disk_space_01.png){: width="500" height="300" } | ![Desktop View](/assets/img/20260328/machine_network_01.png){: width="500" height="300" } |
+| ![Desktop View](/assets/images/20260328/machine_cpu_01.png){: width="500" height="300" } | ![Desktop View](/assets/images/20260328/machine_memory_01.png){: width="500" height="300" } | ![Desktop View](/assets/images/20260328/machine_core_per_minute_01.png){: width="500" height="300" } |
+| ![Desktop View](/assets/images/20260328/machine_disk_rw_01.png){: width="500" height="300" } | ![Desktop View](/assets/images/20260328/machine_disk_space_01.png){: width="500" height="300" } | ![Desktop View](/assets/images/20260328/machine_network_01.png){: width="500" height="300" } |
 
 
 | `JVM`，把时间线拉长一些，可以看到许多时刻有尖刺 |
 | :-------------------------- |
-| ![Desktop View](/assets/img/20260328/G1_gc_base_info_global_01.png){: width="800" height="600" } |
-| ![Desktop View](/assets/img/20260328/G1_gc_base_info_02_global_01.png){: width="800" height="600" } |
-| ![Desktop View](/assets/img/20260328/G1_gc_collector_info_global_01.png){: width="800" height="600" } |
+| ![Desktop View](/assets/images/20260328/G1_gc_base_info_global_01.png){: width="800" height="600" } |
+| ![Desktop View](/assets/images/20260328/G1_gc_base_info_02_global_01.png){: width="800" height="600" } |
+| ![Desktop View](/assets/images/20260328/G1_gc_collector_info_global_01.png){: width="800" height="600" } |
 
 | `JVM`，聚焦到尖刺的时刻，可以看到更详细直观的曲线 |
 | 前提：虽有业务流量增加，但也不是能达到需要限流的地步，否则就得考虑限流或者扩容了 |
@@ -40,9 +40,9 @@ _业务请求量激增_
 | <font color="red">随后导致短期内新生代晋升老年代激增，老年代空间不足以容纳从年轻代晋升的对象，导致了频繁FullGC</font> |
 | <font color="orange">看起来2C4G配置对CPU、内存相对敏感，服务用G1 Collector收益不高</font> |
 | :-------------------------- |
-| ![Desktop View](/assets/img/20260328/G1_gc_base_info_local_01.png){: width="800" height="600" } |
-| ![Desktop View](/assets/img/20260328/G1_gc_base_info_02_local_01.png){: width="800" height="600" } |
-| ![Desktop View](/assets/img/20260328/G1_gc_collector_info_local_01.png){: width="800" height="600" } |
+| ![Desktop View](/assets/images/20260328/G1_gc_base_info_local_01.png){: width="800" height="600" } |
+| ![Desktop View](/assets/images/20260328/G1_gc_base_info_02_local_01.png){: width="800" height="600" } |
+| ![Desktop View](/assets/images/20260328/G1_gc_collector_info_local_01.png){: width="800" height="600" } |
 
 如有需要，还可以继续通过查看过载时打印的日志，了解过载时应用内的线程被哪些请求使用、线程`stack`日志，以及过载的请求明细，来进一步定位问题。
 
@@ -307,7 +307,7 @@ $ ps -ef | grep java
 
 优化上线后的业务流量激增，增幅比之前还稍大点，
 
-![Desktop View](/assets/img/20260328/biz_qps_surge_02.png){: width="300" height="150" }
+![Desktop View](/assets/images/20260328/biz_qps_surge_02.png){: width="300" height="150" }
 _业务请求量激增（优化后）_
 
 | 机器负载 |
@@ -315,21 +315,21 @@ _业务请求量激增（优化后）_
 | `CPU`、内存 |
 | 一分钟单核负载指标 |
 | :------------- | :------------- | :------------- |
-| ![Desktop View](/assets/img/20260328/machine_cpu_02.png){: width="500" height="300" } | ![Desktop View](/assets/img/20260328/machine_memory_02.png){: width="500" height="300" } | ![Desktop View](/assets/img/20260328/machine_core_per_minute_02.png){: width="500" height="300" } |
-| ![Desktop View](/assets/img/20260328/machine_disk_rw_02.png){: width="500" height="300" } | ![Desktop View](/assets/img/20260328/machine_disk_space_02.png){: width="500" height="300" } | ![Desktop View](/assets/img/20260328/machine_network_02.png){: width="500" height="300" } |
+| ![Desktop View](/assets/images/20260328/machine_cpu_02.png){: width="500" height="300" } | ![Desktop View](/assets/images/20260328/machine_memory_02.png){: width="500" height="300" } | ![Desktop View](/assets/images/20260328/machine_core_per_minute_02.png){: width="500" height="300" } |
+| ![Desktop View](/assets/images/20260328/machine_disk_rw_02.png){: width="500" height="300" } | ![Desktop View](/assets/images/20260328/machine_disk_space_02.png){: width="500" height="300" } | ![Desktop View](/assets/images/20260328/machine_network_02.png){: width="500" height="300" } |
 
 | 看图说话：新生代使用量降下来了，同时`Young GC`对`CPU`资源没那么敏感了 |
 | 不会导致`CPU`过载导致的短期内晋升老年代太多的问题，也就不会频繁`FullGC`，服务平稳运行 |
 | :-------------------------- |
-| ![Desktop View](/assets/img/20260328/CMS_gc_base_info_local_02.png){: width="800" height="600" } |
-| ![Desktop View](/assets/img/20260328/CMS_gc_base_info_02_local_02.png){: width="800" height="600" } |
-| ![Desktop View](/assets/img/20260328/CMS_gc_collector_info_local_02.png){: width="800" height="600" } |
+| ![Desktop View](/assets/images/20260328/CMS_gc_base_info_local_02.png){: width="800" height="600" } |
+| ![Desktop View](/assets/images/20260328/CMS_gc_base_info_02_local_02.png){: width="800" height="600" } |
+| ![Desktop View](/assets/images/20260328/CMS_gc_collector_info_local_02.png){: width="800" height="600" } |
 
 | 再看看，优化上线前后的`GC`指标对比，效果立马显现 |
 | :-------------------------- |
-| ![Desktop View](/assets/img/20260328/G1_gc_base_info_global_02.png){: width="800" height="600" } |
-| ![Desktop View](/assets/img/20260328/G1_gc_base_info_02_global_02.png){: width="800" height="600" } |
-| ![Desktop View](/assets/img/20260328/G1_gc_collector_info_global_02.png){: width="800" height="600" } |
+| ![Desktop View](/assets/images/20260328/G1_gc_base_info_global_02.png){: width="800" height="600" } |
+| ![Desktop View](/assets/images/20260328/G1_gc_base_info_02_global_02.png){: width="800" height="600" } |
+| ![Desktop View](/assets/images/20260328/G1_gc_collector_info_global_02.png){: width="800" height="600" } |
 
 ## End 🌈🌈🌈
 生活依然那么美好，可以继续撸代码了。

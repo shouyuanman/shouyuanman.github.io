@@ -80,12 +80,12 @@ music-id: 2688465841
 
 1. **LLM + 记忆 + 规划 + 工具 + 反馈**
 
-    ![Desktop View](/assets/img/20250418/agent_arch_t.png){: width="800" height="400" }
+    ![Desktop View](/assets/images/20250418/agent_arch_t.png){: width="800" height="400" }
     _AI Agent 架构_
 
 2. **生物学角度理解**
 
-    ![Desktop View](/assets/img/20250418/agent_arch_b.jpg){: width="800" height="500" }
+    ![Desktop View](/assets/images/20250418/agent_arch_b.jpg){: width="800" height="500" }
     _AI Agent 架构（生物学角度理解）_
 
 ### **Agent为什么出现？**
@@ -112,7 +112,7 @@ music-id: 2688465841
 
 #### **记忆 Memory**
 
-![Desktop View](/assets/img/20250418/agent_memory.png){: width="800" height="400" }
+![Desktop View](/assets/images/20250418/agent_memory.png){: width="800" height="400" }
 _AI Agent Memory_
 
 #### **规划 Planning**
@@ -121,7 +121,7 @@ _AI Agent Memory_
 
 ##### **任务分解**
 
-![Desktop View](/assets/img/20250418/agent_planning_sub_decom.jpg){: width="800" height="400" }
+![Desktop View](/assets/images/20250418/agent_planning_sub_decom.jpg){: width="800" height="400" }
 _AI Agent Planning 任务分解_
 
 ##### **自我反省**
@@ -131,21 +131,21 @@ _AI Agent Planning 任务分解_
 - 将动作空间扩展为一个任务特定的离散动作和语言空间的组合，将推理和动作集成在`LLM`中，引导`LLM`如何输出和思考；
 - 融合`Reasoning`和`Acting`的一种`Prompt`范式，仅仅包含`thought-action-observation`步骤，很容易判断推理的过程的正确性。
 
-    ![Desktop View](/assets/img/20250418/agent_planning_react.png){: width="800" height="400" }
+    ![Desktop View](/assets/images/20250418/agent_planning_react.png){: width="800" height="400" }
     _AI Agent Planning ReAct_
 
 2. Self-ask
 - 一种`follow-up`的使用范式，仅仅包含`follow-up`，`immediate answer`步骤；
 - `Self-ask`需要一个/少量`Prompt`来引导`LLM`如何回答`Prompt`问题。整个过程中，会大量的跟搜索引擎或向量知识库交互，不断地自我问答，来提升大语言模型（绿色背景为`LLM`输出，白色是`LLM`的输入，下划线为`Inference-time`）。
 
-    ![Desktop View](/assets/img/20250418/agent_planning_self_ask.png){: width="500" height="250" }
+    ![Desktop View](/assets/images/20250418/agent_planning_self_ask.png){: width="500" height="250" }
     _AI Agent Planning Self-ask_
 
 #### **工具 Tools**
 
 借助外部`API`工具，补充`LLM`缺少的行动能力，让专业的人做专业的事。`Action`，有了工具，就可以执行了。
 
-![Desktop View](/assets/img/20250418/agent_tools.jpg){: width="800" height="400" }
+![Desktop View](/assets/images/20250418/agent_tools.jpg){: width="800" height="400" }
 _AI Agent Tools_
 
 

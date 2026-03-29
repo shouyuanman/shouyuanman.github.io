@@ -12,7 +12,7 @@ music-id: 393685
 
 [**jekyll-now**](https://github.com/barryclark/jekyll-now)是一个 `jekyll` 脚手架，可以基于它轻松地使用 `GitHub Pages` 服务创建 `jekyll` 博客，使用方式可以参考仓库`ReadMe`。
 
-![Desktop View](/assets/img/20241207/jekyll_readme.png){: width="250" height="150" }
+![Desktop View](/assets/images/20241207/jekyll_readme.png){: width="250" height="150" }
 _jekyll readme_
 
 ## GitHub Pages
@@ -28,7 +28,7 @@ GitHub Pages 服务有如下特点，
 
 具体可以参考[**关于 GitHub Pages**](https://docs.github.com/zh/enterprise-server@3.8/pages/getting-started-with-github-pages/about-github-pages)帮助文档。
 
-![Desktop View](/assets/img/20241207/github_pages_setting.png){: width="400" height="200" }
+![Desktop View](/assets/images/20241207/github_pages_setting.png){: width="400" height="200" }
 _github pages setting_
 
 ## jekyll 主题
@@ -37,17 +37,17 @@ _github pages setting_
 ## 建站步骤
 - 选定 `chirpy` 主题，在 `Github` 上 `fork` 主题仓库，仓库权限需要设置成 `public`；
 
-![Desktop View](/assets/img/20241207/chirpy_fork.png){: width="300" height="100" }
+![Desktop View](/assets/images/20241207/chirpy_fork.png){: width="300" height="100" }
 _fork chirpy_
 
 - 这里使用 `GitHub Pages` 服务提供的 `username.github.io` 免费域名，需要把 `fork` 的主题仓库名字改成 `username.github.io`；
 
-![Desktop View](/assets/img/20241207/user_github_io.png){: width="200" height="100" }
+![Desktop View](/assets/images/20241207/user_github_io.png){: width="200" height="100" }
 _user github io_
 
 - 浏览器输入域名简单看下效果，现在可以根据自己的需求定制样式了。
 
-![Desktop View](/assets/img/20241207/blog_init_home_page.png){: width="200" height="100" }
+![Desktop View](/assets/images/20241207/blog_init_home_page.png){: width="200" height="100" }
 _blog init home page_
 
 ## 搭建本地环境
@@ -129,7 +129,7 @@ jekyll clean
 
 4. **确认博客内容符合预期后，把内容推到 `Github`仓库，`自动构建部署`成功后，在站点查看即可**
 
-![Desktop View](/assets/img/20241207/blog_init_home_page.png){: width="800" height="400" }
+![Desktop View](/assets/images/20241207/blog_init_home_page.png){: width="800" height="400" }
 _网站效果图_
 
 ## 配置评论系统
@@ -140,15 +140,15 @@ _网站效果图_
 
 1. 在 [GitHub Marketplace](https://github.com/marketplace)中能搜索到[giscus应用](https://github.com/apps/giscus)，将其安装配置到`GitHub`，可以在[GitHub applicationis](https://github.com/settings/installations)里边查看；
 
-    ![Desktop View](/assets/img/20241207/github_apps_page.png){: width="600" height="300" }
+    ![Desktop View](/assets/images/20241207/github_apps_page.png){: width="600" height="300" }
     _github applicationis page_
 
 2. 在仓库`Setting`-`General`-`Features`中选中`Discussions`，开启`GitHub Discussions`功能；
 
-    ![Desktop View](/assets/img/20241207/github_discussion_set.png){: width="600" height="300" }
+    ![Desktop View](/assets/images/20241207/github_discussion_set.png){: width="600" height="300" }
     _github discussion checked_
 
-    ![Desktop View](/assets/img/20241207/github_discussion_page.png){: width="600" height="300" }
+    ![Desktop View](/assets/images/20241207/github_discussion_page.png){: width="600" height="300" }
     _github discussion page_
 
 3. 打开[giscus配置页面](https://giscus.app/)，选择自定义配置，复制自动生成的`Enable giscus`配置；
@@ -163,7 +163,7 @@ Discussion Category
 ```
     {: .prompt-tip }
 
-    ![Desktop View](/assets/img/20241207/giscus_enable_content.png){: width="600" height="300" }
+    ![Desktop View](/assets/images/20241207/giscus_enable_content.png){: width="600" height="300" }
     _giscus enable content_
 
 4. 把上面自动生成的配置放在`_config.yml`中，重新构建发布后，就能看到评论系统了。
@@ -193,7 +193,7 @@ comments:
 ```
 {: file='_config.yml' .nolineno }
 
-![Desktop View](/assets/img/20241207/blog_comment.png){: width="600" height="300" }
+![Desktop View](/assets/images/20241207/blog_comment.png){: width="600" height="300" }
 _blog comment_
 
 ## 写博客
@@ -204,10 +204,10 @@ _blog comment_
 
 先来看看功能效果图，
 
-![Desktop View](/assets/img/20241207/busuanzi_count_site.png){: width="400" height="200" }
+![Desktop View](/assets/images/20241207/busuanzi_count_site.png){: width="400" height="200" }
 _效果图 1_
 
-![Desktop View](/assets/img/20241207/busuanzi_count_post.png){: width="400" height="200" }
+![Desktop View](/assets/images/20241207/busuanzi_count_post.png){: width="400" height="200" }
 _效果图 2_
 
 ### 统计并显示网站访问量

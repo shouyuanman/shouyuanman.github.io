@@ -1,8 +1,8 @@
 ---
-title: 线上服务紧急告警，调优Java GC
+title: 线上服务紧急告警，调优JVM GC
 date: 2026-03-27 23:34:35 +0800
 categories: [后端, 垃圾回收]
-tags: [后端, 分布式微服务, 垃圾回收, JavaGC]
+tags: [后端, 分布式微服务, 垃圾回收, JVMGC]
 music-id: 442503037
 ---
 
@@ -22,7 +22,7 @@ _业务请求量激增_
 
 | 机器负载 |
 | 服务`2C4G`小型配置 |
-| `CPU`、内存相对敏感 |
+| `CPU`、内存短时间内过载 |
 | :------------- | :------------- | :------------- |
 | ![Desktop View](/assets/images/20260328/machine_cpu_01.png){: width="500" height="300" } | ![Desktop View](/assets/images/20260328/machine_memory_01.png){: width="500" height="300" } | ![Desktop View](/assets/images/20260328/machine_core_per_minute_01.png){: width="500" height="300" } |
 | ![Desktop View](/assets/images/20260328/machine_disk_rw_01.png){: width="500" height="300" } | ![Desktop View](/assets/images/20260328/machine_disk_space_01.png){: width="500" height="300" } | ![Desktop View](/assets/images/20260328/machine_network_01.png){: width="500" height="300" } |
@@ -38,7 +38,7 @@ _业务请求量激增_
 | 前提：虽有业务流量增加，但也不是能达到需要限流的地步，否则就得考虑限流或者扩容了 |
 | <font color="red">看图说话：老年代平常用的其实不多，当新生代疯狂gc，基本都是一次性的对象，导致CPU和内存过载</font> |
 | <font color="red">随后导致短期内新生代晋升老年代激增，老年代空间不足以容纳从年轻代晋升的对象，导致了频繁FullGC</font> |
-| <font color="orange">看起来2C4G配置对CPU、内存相对敏感，服务用G1 Collector收益不高</font> |
+| <font color="orange">看起来2C4G配置在CPU、内存相对较小的情况下，服务用G1 Collector收益不高</font> |
 | :-------------------------- |
 | ![Desktop View](/assets/images/20260328/G1_gc_base_info_local_01.png){: width="800" height="600" } |
 | ![Desktop View](/assets/images/20260328/G1_gc_base_info_02_local_01.png){: width="800" height="600" } |
@@ -318,8 +318,10 @@ _业务请求量激增（优化后）_
 | ![Desktop View](/assets/images/20260328/machine_cpu_02.png){: width="500" height="300" } | ![Desktop View](/assets/images/20260328/machine_memory_02.png){: width="500" height="300" } | ![Desktop View](/assets/images/20260328/machine_core_per_minute_02.png){: width="500" height="300" } |
 | ![Desktop View](/assets/images/20260328/machine_disk_rw_02.png){: width="500" height="300" } | ![Desktop View](/assets/images/20260328/machine_disk_space_02.png){: width="500" height="300" } | ![Desktop View](/assets/images/20260328/machine_network_02.png){: width="500" height="300" } |
 
-| 看图说话：新生代使用量降下来了，同时`Young GC`对`CPU`资源没那么敏感了 |
-| 不会导致`CPU`过载导致的短期内晋升老年代太多的问题，也就不会频繁`FullGC`，服务平稳运行 |
+| 看图说话：新生代使用量降下来了，同时`Young GC`的`CPU`资源利用率也降下来了， |
+| 虽然`CMS`在并发阶段也会占用一部分`CPU`资源，但现在不会导致用户线程停顿，效果要比`G1`好太多，|
+| 目前应用不会由于`CPU`过载导致的短期内晋升老年代太多的问题，也就不会频繁`FullGC`，服务平稳运行。 |
+| 注意：后期应持续关注应用是否会在`CPU`不足的情况下，有明细的卡顿现象。 |
 | :-------------------------- |
 | ![Desktop View](/assets/images/20260328/CMS_gc_base_info_local_02.png){: width="800" height="600" } |
 | ![Desktop View](/assets/images/20260328/CMS_gc_base_info_02_local_02.png){: width="800" height="600" } |

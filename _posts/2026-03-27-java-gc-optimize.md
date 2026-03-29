@@ -327,7 +327,7 @@ _业务请求量激增（优化后）_
 
 | 再看看，优化上线前后的`GC`指标对比，效果立马显现 |
 | :-------------------------- |
-| ![Desktop View](/assets/images/20260328/G1_gc_base_info_global_02.png){: width="800" height="600" } |
+| ![Desktop View](/assets/images/20260328/G1_gc_base_info_global_02.jpg){: width="800" height="600" } |
 | ![Desktop View](/assets/images/20260328/G1_gc_base_info_02_global_02.png){: width="800" height="600" } |
 | ![Desktop View](/assets/images/20260328/G1_gc_collector_info_global_02.png){: width="800" height="600" } |
 

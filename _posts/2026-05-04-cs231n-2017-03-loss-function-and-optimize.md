@@ -289,7 +289,7 @@ _随机梯度下降 SGD（来自cs231n）_
 
 重复说一遍，这里我们将会看到更高级的更新规则，在过程中如何整合多个梯度，但这是一个基本的训练算法，我们在深度神经网络中经常用到。
 
-线性分类器使用随机梯度下降来训练它们，可以在网上[随机梯度下降 Web Demo](http://vision.stanford.edu/teaching/cs231n-demos/linear-classify/)看看用梯度下降来训练线性分类器是怎么回事。
+线性分类器使用随机梯度下降来训练它们，可以在网上[随机梯度下降 Web Demo](https://vision.stanford.edu/teaching/cs231n-demos/linear-classify/)看看用梯度下降来训练线性分类器是怎么回事。
 
 ![Desktop View](/assets/images/20260504/sgd_web_demo.png){: width="600" height="300" }
 _随机梯度下降 Web Demo（来自cs231n）_

@@ -3,7 +3,7 @@ title: 深度学习软件
 date: 2026-05-23 21:00:00 +0800
 categories: [AI, cs231n]
 tags: [cs231n, 计算机视觉, 机器学习, 深度学习]
-music-id: 26224538
+music-id: 1379958635
 ---
 
 ## **回顾上节**
@@ -17,7 +17,7 @@ _简单回顾：训练神经网络（来自cs231n）_
 
 深度学习软件，每年都有新的变化。今天我们讨论一些关于编写软件和硬件，以及它们如何工作的细节，还有一点是，了解一下这个软件的实际应用流程。我们会讨论一些关于`CPUs`和`GPUs`，然后讨论当前几个主流的深度学习框架，比如`Caffe`、`Torch`、`Theano`、`Trensorflow`、`Keras`、`PyTorch`等。
 
-![Desktop View](/assets/images/20260523/deep_learning_software_related.png){: width="400" height="200" }
+![Desktop View](/assets/images/20260523/deep_learning_software_related.png){: width="300" height="150" }
 _深度学习软件相关（来自cs231n）_
 
 ### **GPU**
@@ -63,17 +63,17 @@ _GPU编程（来自cs231n）_
 
 如果想看一下`CPU`和`GPU`实际的性能表现，去年夏天我做了一些基准测试，把一款`Intel`的高端`CPU`同当时性能最好的几款`GPU`做了一下比较，这是我得到的测试结果。更详细的内容可以在`Github`上找到，我发现在`VGG16/19`和不同层数的`ResNet`上，对于完全相同的计算任务，`CPU`耗时是`GPU`的`65~75`倍，这里的`GPU`是旗舰级的`Pascal Titan X`。`CPU`则是顶级，但也不算最顶级的`Intel E5`处理器。不过要提醒一下，在阅读任何这类基准评测时，都要保持非常谨慎的态度，因为在两种事物之间作比较很容易得到不公平的结果，需要了解很多细节，比如这个基准测试到底在测什么，才能判断这样的比较是不是公平的。这里采用直接在`CPU`上安装运行`Torch`，和直接在`GPU`上安装运行`Torch`。我把它们直接拿来就用了，所以测试结果可能不是理论上`CPU`的最高性能。
 
-![Desktop View](/assets/images/20260523/performance_cpu_vs_gpu.png){: width="400" height="200" }
+![Desktop View](/assets/images/20260523/performance_cpu_vs_gpu.png){: width="600" height="300" }
 _CPU vs GPU 性能对比（来自cs231n）_
 
 另一个有趣的结果是，比较了`NVIDIA`为卷积优化过的`cuDNN`库，和没有经过优化的发布在开源社区以`CUDA`写成的代码，在相同的网络，相同的硬件，相同的`Deep Learning`框架上，唯一的区别是，`cuDNN`换成了原生手写未经优化的`CUDA`版代码，可以在图表中看到大约有`3`倍的速度差距，也就是说优化过的`cuDNN`比原生`CUDA`版代码快这么多。所以一般来说，只要你在`GPU`上写代码，你就应该使用`cuDNN`，不然根据这个图表你会白白扔掉`3`倍左右的性能增幅。
 
-![Desktop View](/assets/images/20260523/performance_cudnn_vs_cuda.png){: width="400" height="200" }
+![Desktop View](/assets/images/20260523/performance_cudnn_vs_cuda.png){: width="600" height="300" }
 _cuDNN vs CUDA 性能对比（来自cs231n）_
 
 在实践中，还有一个问题，在训练网络时，模型可能存储在`GPU`上，比如模型的权重存储在这块`12G`大小的`GPU`内存上，但是庞大的数据集却存储在机械硬盘或是固态硬盘上，如果不小心就可能让从硬盘中读取数据的环节成为训练速度的瓶颈，因为`GPU`运行非常快，它计算正向、反向传播的速度非常快，从机械硬盘上串行地读取数据会拖慢训练速度，这会让训练变慢。有一些解决的方法，如果数据集比较小，可以把整个数据集读到内存中，或者哪怕数据集不小，但是你有台插满了内存的服务器，就可以这么干。也可以装一块固态硬盘替换掉机械硬盘，这样读入速度会有很大提升。另一个常用思路是，在`CPU`上使用多线程来预读数据，把数据读出内存或者读出硬盘，存储到内存上，这样就能连续不断的将缓存数据比较高效地送给`GPU`。这种方法不太容易实现，但是因为`GPU`太快了，如果不尽可能快地把数据发送给`GPU`，仅仅读取数据这一项就会拖慢整个训练过程，这是需要注意的一点。
 
-![Desktop View](/assets/images/20260523/cpu_gpu_communication.png){: width="400" height="200" }
+![Desktop View](/assets/images/20260523/cpu_gpu_communication.png){: width="600" height="300" }
 _CPU 和 GPU 通信（来自cs231n）_
 
 >Q：在写代码时，怎样才能有效地避免前面提到的那些问题呢？
@@ -85,12 +85,12 @@ A：从软件上来说，可能你能做到的最有效的事情是设定好`CPU
 
 ### **框架软件**
 
-![Desktop View](/assets/images/20260523/deep_learning_framework.png){: width="400" height="200" }
+![Desktop View](/assets/images/20260523/deep_learning_framework.png){: width="200" height="100" }
 _深度学习框架（来自cs231n）_
 
 深度学习框架在飞速发展，去年讲这门课时，主要还是`Caffe`、`Torch`、`Theano`和`Tensorflow`。从去年到今年，`Tensorflow`取得了很大的发展，并且变得流行起来。
 
-![Desktop View](/assets/images/20260523/deep_learning_framework_dev_manufacture.png){: width="400" height="200" }
+![Desktop View](/assets/images/20260523/deep_learning_framework_dev_manufacture.png){: width="300" height="150" }
 _各种各样的新框架如雨后春笋般发布出来（来自cs231n）_
 
 现在各种各样的新框架如雨后春笋般发布出来，尤其是`Caffe2`和`PyTorch`这两个来自`Facebook`的新框架，其他框架还有很多，如百度的`Paddle`、微软的`CNTK`等等。今天主要讨论`PyTorch`和`Tensorflow`。
@@ -142,7 +142,7 @@ _使用Tensorflow实现计算图（来自cs231n）_
 
 但是，现在`Tensorflow`有神奇的这么一行替你计算了所有梯度，所以现在你不用自己写反向计算，这样方便太多了。
 
-![Desktop View](/assets/images/20260523/tensorflow_calc_gradient.png){: width="400" height="200" }
+![Desktop View](/assets/images/20260523/tensorflow_calc_gradient.png){: width="500" height="250" }
 _Tensorflow计算梯度（来自cs231n）_
 
 另一个关于`Tensorflow`很棒的地方是，你可以使用这样一行代码来将所有的这些计算在`CPU`和`GPU`之间切换，所以这里如果你添加了这个声明，在进行前向传播之前，你就明确地告诉了框架我想要在`CPU`上运行这些代码。
@@ -191,7 +191,7 @@ _Tensorflow实现简单的两层全连接神经网络（来自cs231n）_
 
 看右边的代码，假设`Numpy`和`TensorFlow`已经被导入到所有的这些代码中，
 
-![Desktop View](/assets/images/20260523/tensorflow_and_numpy_import.png){: width="400" height="200" }
+![Desktop View](/assets/images/20260523/tensorflow_and_numpy_import.png){: width="300" height="150" }
 _导入模块（来自cs231n）_
 
 那么在`TensorFlow`中，通常情况可以把你的计算划分为两个主要阶段。首先我们先用一段代码来定义我们的计算图，就是上半部分，然后可以定义自己的图，这个计算图会运行数次，实际上你可以将数据输入到计算图中去实现任何你想实现的运算，这是`TensorFlow`中非常通用的一种模式。首先用一段代码构建图，然后可以运行图模型，重复利用它很多次。
@@ -432,7 +432,7 @@ _PyTorch nn（来自cs231n）_
 
 循环体中每一次迭代时，我们都可以在模型中前向传送数据，得到预测值，把预测值放入损失函数，得到损失值，然后调用`loss.backward`自动计算所有梯度，然后在模型的所有参数上循环，进行显式的梯度下降操作来更新模型。
 
-![Desktop View](/assets/images/20260523/pytorch_forward_pass.png){: width="400" height="200" }
+![Desktop View](/assets/images/20260523/pytorch_forward_pass.png){: width="500" height="250" }
 _PyTorch forward pass（来自cs231n）_
 
 我们又一次看到，每次做前向传播时，都建立了一张新的计算图。与`TensorFlow`一样，`PyTorch`提供了优化操作，将参数更新的流程抽象出来，并执行`Adam`之类的更新法则。这里我们建立了一个`optimizer`对象，告诉它我们想要对模型中的参数进行优化，把学习率之类的超参数设置给它。
@@ -442,7 +442,7 @@ _PyTorch optimizer（来自cs231n）_
 
 并在计算了梯度之后，我们就可以调用`optimizer.step`来更新模型中所有的参数。
 
-![Desktop View](/assets/images/20260523/pytorch_optimizer_step.png){: width="400" height="200" }
+![Desktop View](/assets/images/20260523/pytorch_optimizer_step.png){: width="500" height="250" }
 _PyTorch 更新模型中所有的参数（来自cs231n）_
 
 `PyTorch`中还有一件通常要做的事，就是定义自己的`nn`模块。通常要写出自己的类，这个类把整个模型定义成`nn`模块中的一个新的类，一个模块只是神经网络的一种层，它可以包含其他的模块或者可训练的权重或其他状态。
@@ -452,12 +452,12 @@ _PyTorch 定义自己的nn模块（来自cs231n）_
 
 例子中，我们通过定义自己的`nn`模块类重现这两层网络。在类的初始化操作时，我们分配了`linear1`和`linear2`，建立新的模块对象，然后存在类中，现在在前向传播时，我们可以使用自己的内部模块，也可以对变量使用任意`autograd`操作来计算网络的输出，这里是`forward`方法的内容作为输入的变量，然后把输入的变量传给`self.linear1`作为第一层，我们用`autograd`操作`clamp`函数计算`relu`，再把输出传给`linear2`，然后我们就得到输出`y_pred`。
 
-![Desktop View](/assets/images/20260523/pytorch_nn_define_new_module_02.png){: width="400" height="200" }
+![Desktop View](/assets/images/20260523/pytorch_nn_define_new_module_02.png){: width="500" height="250" }
 _PyTorch 定义自己的nn模块（来自cs231n）_
 
 那么这段训练的代码就基本上看起来一样了，我们建立了优化器，然后不断地循环，在每次迭代中喂数据给模型，通过`loss.backwards`来计算梯度，调用`optimizer.step`，所以这是比较典型的。
 
-![Desktop View](/assets/images/20260523/pytorch_nn_build_and_train.png){: width="400" height="200" }
+![Desktop View](/assets/images/20260523/pytorch_nn_build_and_train.png){: width="500" height="250" }
 _PyTorch 训练（来自cs231n）_
 
 在你看到很多的`PyTorch`训练场景中，你可以定义你自己的类，定义你自己的模型包括其他的模块，然后你可以进行明确的训练，运行它然后更新它。

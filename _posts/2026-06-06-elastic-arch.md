@@ -625,7 +625,7 @@ _集群运行状态_
 
 在控制台界面，没用负载均衡，所以没用`haproxy`。负载均衡是在程序里边访问`ES`的协调节点时使用的。
 
-浏览器[访问Kibana](192.168.56.121:15601)，如下，
+浏览器[访问Kibana](https://192.168.56.121:15601)，如下，
 
 ![Desktop View](/assets/images/20260605/kibana_welcome.png){: width="600" height="300" }
 _kibana_

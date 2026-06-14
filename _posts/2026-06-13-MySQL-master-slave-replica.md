@@ -39,12 +39,13 @@ _docker-compose yaml_
 ![Desktop View](/assets/images/20260613/mysql_master_conf.png){: width="600" height="300" }
 _Master主配置文件my.cnf_
 
-![Desktop View](/assets/images/20260613/mysql_master_conf.png){: width="600" height="300" }
+![Desktop View](/assets/images/20260613/mysql_slave_conf.png){: width="600" height="300" }
 _Slave从配置文件my.cnf_
 
 创建对应的目录结构，为目录赋予权限后，直接启动`MySQL`服务主从集群。
 
 ```terminal
+$ mkdir -p /home/docker-compose/mysqlmasterslave/{master,slave}-{log,data}
 $ cd /home/docker-compose/
 $ chmod 777 -R /home/docker-compose/mysqlmasterslave
 $ chmod 644 /home/docker-compose/mysqlmasterslave/master/my.cnf
@@ -68,7 +69,7 @@ _服务网络拓扑_
 
 通过`docker`编排的方式，一键搭建`MySQL`高可用主从集群。如果不用`docker`编排的方式，就得一行行地手动敲`shell`命令来搭建，工作量非常大。当然对`DBA`另当别论，他们有很多工具可以方便的维护高可用集群，如果开发人员来弄这种环境，还是用`docker`编排比较方便，需要考虑的配置和因素也没有这么多，更重要地是为掌握主从复制、高可用这些基础原理做准备。
 
-虽然服务起来，但是如果要做到主从复制的效果，还得对主从集群的`Master`、`Slave`进行配置。
+虽然看到`docker`服务起来了，但是如果要做到主从复制的效果，还得对主从集群的`Master`、`Slave`进行配置。
 
 ### **配置Master**
 
@@ -78,21 +79,21 @@ $ mysql -uroot -p123456
 $ show variables like '%server_id%';
 ```
 
-进入`MySQL`主服务，查看server_id是否生效，
+进入`MySQL`主服务，查看`server_id`是否生效，
 
-![Desktop View](/assets/images/20260613/show_variables_like_server_id.png){: width="600" height="300" }
+![Desktop View](/assets/images/20260613/show_variables_like_server_id.png){: width="400" height="200" }
 _server id_
 
 ```terminal
 $ show master status;
 ```
 
-看`Master`信息`File`和`Position`, 从节点服务上要用，
+看`Master`信息`File`和`Position`，从节点服务上要用，
 
 ![Desktop View](/assets/images/20260613/show_master_status.png){: width="600" height="300" }
 _master status_
 
-给`root`开远程权限，
+给`root`用户开远程权限，
 
 ```terminal
 $ GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456';  
@@ -100,7 +101,7 @@ $ grant replication slave,replication client on *.* to 'slave'@'%' identified b
 $ flush privileges;
 ```
 
-在主节点上，对从节点复制创建一个用户`slave`，配置上对应密码，这个用户账号有复制的权限，专门用来做主从同步的，
+在主节点上，为从节点复制创建一个用户`slave`，配置上对应密码，这个用户账号有复制的权限，专门用来做主从同步的，
 
 ```terminal
 $ grant replication slave,replication client on *.* to 'slave'@'%' identified by "123456";
@@ -120,23 +121,23 @@ $ show variables like '%server_id%';
 
 进入`MySQL`从服务，查看从节点`server_id`是否生效，
 
-![Desktop View](/assets/images/20260613/show_variables_like_server_id_slave.png){: width="600" height="300" }
+![Desktop View](/assets/images/20260613/show_variables_like_server_id_slave.png){: width="400" height="200" }
 _slave server id_
 
-建立主从关系，从节点上通过在主节点建立的用户账号，连上去，开启主从同步机制（前面在主节点上，查看`binlog`的文件名和偏移量），
+建立主从关系，从节点上通过在主节点建立的用户账号，连上去，开启主从同步机制（这里会用到前面在主节点上，查看`binlog`的文件名和偏移量），
 
 ```terminal
 $ change master to master_host='mysql-master',master_user='slave',master_password='123456',master_port=3306,master_log_file='bin-log.000003',master_log_pos=1346,master_connect_retry=30;
 ```
 
 连接主`MySQL`参数说明，
-- master_host：主节点的ip（或主机名称）
-- master_port：Master的端口号，指的是容器的端口号
-- master_user：用于数据同步的用户
-- master_password：用于同步的用户的密码
-- master_log_file：指定 Slave 从哪个日志文件开始复制数据，即上文中提到的 File 字段的值
-- master_log_pos：从哪个 Position 开始读，即上文中提到的 Position 字段的值
-- master_connect_retry：如果连接失败，重试的时间间隔，单位是秒，默认是60秒
+- `master_host`：主节点的`ip`（或主机名称）
+- `master_port`：`Master`的端口号，指的是容器的端口号
+- `master_user`：用于数据同步的用户
+- `master_password`：用于同步的用户的密码
+- `master_log_file`：指定`Slave`从哪个日志文件开始复制数据，即上文中提到的`File`字段的值
+- `master_log_pos`：从哪个`Position`开始读，即上文中提到的`Position`字段的值
+- `master_connect_retry`：如果连接失败，重试的时间间隔，单位是秒，默认是`60`秒
 
 在从库上，启动`slave`线程，
 
@@ -144,10 +145,10 @@ $ change master to master_host='mysql-master',master_user='slave',master_passwor
 start slave;
 ```
 
-![Desktop View](/assets/images/20260613/start_slave.png){: width="600" height="300" }
+![Desktop View](/assets/images/20260613/start_slave.png){: width="500" height="250" }
 _slave start_
 
-看下从节点状态，
+看下从节点状态，`Slave_IO_Running`和`Slave_SQL_Running`都是`YES`，表示主从复制环境配置成功了。
 
 ```terminal
 $ show slave status \G;
@@ -174,8 +175,6 @@ _slave not running_
 
 ![Desktop View](/assets/images/20260613/start_slave_error_connect.png){: width="600" height="300" }
 _start slave error_
-
-可以看到，主节点还没授权。
 
 授权成功后，需要停止`slave`，并重置下`slave`，
 
@@ -206,9 +205,9 @@ _从库同步_
 ## **把脉三大日志**
 
 下面看下`MySQL`三大日志，
-- binlog，归档日志，或者二进制日志
-- redolog，重做日志
-- undolog，回滚日志
+- `binlog`，归档日志，或者二进制日志
+- `redolog`，重做日志
+- `undolog`，回滚日志
 
 ### **binlog原理、使用场景、持久化策略**
 
@@ -216,33 +215,34 @@ _从库同步_
 
 从节点开始同步时，即执行`start slave`，主从节点间就开始了日志的传输。从节点通过`IO`线程拿到数据，在从节点本地，就不叫`binlog`，而叫`relay-log`（中继日志），拿到中继日志后，通过`SQL`线程解析，重新执行这个`SQL`生成数据。
 
-`binlog`的作用
-- 用于复制，在主从复制中，从库利用主库上的`binlog`进行重播，实现主从同步。
+**`binlog`的作用**
+- 用于复制，在主从复制中，从库利用主库上的`binlog`进行回放，实现主从同步。
 - 用于基于时间点的数据还原，主要是用于增量数据还原。
 
-`binlog`的使用场景
-- 平时会做数据备份，数据备份一般是周期性的备份，常用命令是`mysqldump`。假设第二天中午机器故障，`MySQL`崩溃，之前的备份数据还是昨天晚上，昨天晚上到今天中午没有来得及备份，但数据还是要恢复，恢复数据时分为两部分，一部分是把昨天晚上全量的数据导入进去，再把增量的数据倒进来。
+**`binlog`的使用场景**
+- 平时会做数据备份，数据备份一般是周期性的备份，常用命令是`mysqldump`。假设第二天中午机器故障，`MySQL`崩溃，之前的备份数据还是昨天晚上的，昨天晚上到今天中午没有来得及备份，但数据还是要恢复，恢复数据时分为两部分，一部分是把昨天晚上全量的数据导入进去，再把增量的数据倒进来。
 - 全量是每次周期性压缩成压缩包，需要时全量导入即可。
 - 增量的部分数据，就是在`binlog`里边，把`binlog`文件导出一个`SQL`，再把这个`SQL`导入到库里边。
 
-`binlog`保存的内容，跟格式有关系，`binlog`有三种格式，分别是`STATEMENT`、`ROW`、`MIXED`，
+`binlog`保存的内容，跟格式有关系，**`binlog`有三种格式**，分别是`STATEMENT`、`ROW`、`MIXED`，
 - `STATEMENT`模式：`binlog`里面记录的就是`SQL`语句的原文。优点是并不需要记录每一行的数据变化，减少了`binlog`日志量，节约`IO`，提高性能。缺点是在某些情况下会导致`master-slave`中的数据不一致，因为并没有记录修改之前的状态。
 - `ROW`模式：不记录每条`SQL`语句的上下文信息，仅需记录哪条数据被修改了，修改成什么样了，解决了`STATEMENT`模式下出现`master-slave`中的数据不一致。缺点是会产生大量的日志，尤其是`alter table`的时候会让日志暴涨，因为它会影响到所有的行。比如`SQL`里边只改了一个字段，在该模式下会把有变化的和没变化的一并记录了下来，即整个行都记录下来了，修改之前和修改后的都记录下来了，一行一行来，假如是一条`update`语句，命中改了`3`行就会记录`3`行`binlog`。
 - `MIXED`模式：折中方案，以上两种模式的混合使用，一般的复制使用`STATEMENT`模式保存`binlog`，对于`STATEMENT`模式无法复制的操作使用`ROW`模式保存`binlog`，`MySQL`会根据执行的`SQL`语句选择日志保存方式。
 
-`binlog`持久化策略，可以用参数`sync_binlog`来配置，
+**`binlog`持久化策略**，可以用参数`sync_binlog`来配置，
 - 在进行事务的过程中，首先会把`binlog`写入到`binlog cache`中（因为写入到`cache`中会比较快，一个事务通常会有多个操作，避免每个操作都直接写磁盘导致性能降低），事务最终提交的时候再把`binlog`写入到磁盘中。当然事务在最终`commit`的时候，`binlog`是否马上写入到磁盘中是由参数`sync_binlog`（同步刷盘） 配置来决定的。
-- `sync_binlog=0`（不同步刷盘） 的时候（由后台线程异步刷盘），表示每次提交事务binlog不会马上写入到磁盘，而是先写到`page cache`（文件系统缓存），相对于磁盘写入来说，写`page cache`要快得多，但在异步刷盘的模式下，数据是不可靠的，在`MySQL`崩溃的时候会有丢失日志的风险。
-- `sync_binlog=1`（同步刷盘） 的时候，表示每次提交事务都会执行 fsync 写入到磁盘（binlog文件，文件目录在配置文件里配置）。
+- `sync_binlog=0`（不同步刷盘） 的时候（由后台线程异步刷盘），表示每次提交事务`binlog`不会马上写入到磁盘，而是先写到`page cache`（文件系统缓存），相对于磁盘写入来说，写`page cache`要快得多，但在异步刷盘的模式下，数据是不可靠的，在`MySQL`崩溃的时候会有丢失日志的风险。
+- `sync_binlog=1`（同步刷盘） 的时候，表示每次提交事务都会执行`fsync`写入到磁盘（`binlog`文件，文件目录在配置文件里配置）。
 - `sync_binlog`的值大于`1`（积累了`n`个事务才刷盘）的时候，表示每次提交事务都先写到`page cache`，只有等到积累了`n`个事务之后才`fsync`写入到磁盘，同样在此设置下`MySQL`崩溃的时候会有丢失`n`个事务日志的风险。
 
-很显然三种模式下，`sync_binlog=1`是强一致的选择，选择`0`或者`n`的情况下，在极端情况下就会有丢失日志的风险，具体选择什么模式还是得看系统对于一致性的要求。
+>很显然三种模式下，`sync_binlog=1`是强一致的选择，选择`0`或者`n`的情况下，在极端情况下就会有丢失日志的风险，具体选择什么模式还是得看系统对于一致性的要求。
 - 对数据一致性要求很高，一点都不能丢失，就用同步刷盘；
 - 对数据可靠性要求不高，就用异步刷盘。
+{: .prompt-tip }
 
 ### **redolog原理、使用场景、持久化策略**
 
-`redolog`和`undolog`是和事务有关的，根本目的是保证事务的原子性和持久性，隔离性是通过锁来保障的。
+`redolog`和`undolog`是和事务有关的，根本目的是**保证事务的原子性和持久性**，隔离性是通过锁来保障的。
 - `redolog`，就是在崩溃后，可以对提交的事务进行重做。
 - `undolog`，是在崩溃后，对回滚的事务做撤销。
 - `binlog`，不管有没有事务，`MySQL`都是有的。
@@ -251,16 +251,14 @@ _从库同步_
 
 `MyISAM`是`MySQL`的默认数据库引擎（`5.5`版之前），由早期的`ISAM`所改良。虽然性能极佳，但却有一个缺点，不支持事务处理（`transaction`）。就是说`MyISAM`没有`redolog`和`undolog`。但不管是`InnoDB`，还是`MyISAM`，都有`binlog`。
 
-`redolog`能保证对于已经`COMMIT`的事务产生的数据变更，即使是系统宕机崩溃，也可以通过它来进行数据重做，达到数据的一致性，这也就是事务持久性的特征，一旦事务成功提交后，只要修改的数据都会进行持久化，不会因为异常、宕机而造成数据错误或丢失，所以解决异常、宕机而可能造成数据错误或丢失是redo log的核心职责。
+`redolog`能保证对于已经`commit`的事务产生的数据变更，即使是系统宕机崩溃，也可以通过它来进行数据重做，达到数据的一致性，这也就是事务持久性的特征，一旦事务成功提交后，只要修改的数据都会进行持久化，不会因为异常、宕机而造成数据错误或丢失，所以解决异常、宕机而可能造成数据错误或丢失是`redolog`的核心职责。
 
 >`redolog`是怎样的保障机制？
 {: .prompt-tip }
 
-`WAL`（`Write Ahead Log`），预写日志（写前日志），当事务提交时，先写`redolog`，再修改页。
+`WAL`（`Write Ahead Log`），**预写日志（写前日志）**，当事务提交时，先写`redolog`，再修改页。这和`ES`写日志完全相反，`ES`是反过来的，先写数据，后写日志。
 
-这和`ES`写日志完全相反，`ES`是反过来的，先写数据，后写日志。
-
-保障数据能够有效的恢复，还有一个策略，就是两阶段提交。
+保障数据能够有效地恢复，还有一个策略，就是**两阶段提交**。
 
 通过预写和两阶段提交，来保障`MySQL`数据高可靠（事务的原子性和持久性）。
 
@@ -268,11 +266,13 @@ _从库同步_
 
 看下流程，在事务里边修改数据，先把数据读到内存，先写`redolog`，然后再写数据（更新数据），写入日志和数据还不算，最后会提交日志（日志的写入分两阶段，准备阶段和提交阶段）。
 
-先看写入的次序，数据和日志，谁先写？
+>先看写入的次序，数据和日志，谁先写？
+{: .prompt-tip }
 
 先写日志，再写数据，就是所谓的预写日志。
 
-为什么要做预写日志？
+>为什么要做预写日志？
+{: .prompt-tip }
 
 假设一个程序在执行某些操作的过程中，机器掉电了，在重新启动时，若是使用了`WAL`，程序就能够检查`log`文件，对忽然掉电时计划执行的操作内容，跟实际上执行的操作内容进行比较（看哪些数据丢失了，再补回来）。在这个比较的基础上，程序就能够决定，是撤销已做的操作，还是继续完成已做的操作，或者是保持原样。
 
@@ -281,7 +281,7 @@ _从库同步_
 页面数据什么时候刷盘？这些页面会放在一个池子里边（`Buffer Pool`），
 `Buffer Pool`是物理页的缓存，对`InnoDB`的任何修改操作都会首先在`Buffer Pool`的`page`上进行，然后这样的页将被标记为脏页并被放到专门的`Flush List`上，后续将由专门的刷脏线程阶段性的将这些页面写入磁盘。
 
-`redolog`的存储方式
+**`redolog`的存储方式**
 
 不是滚动增长的方式，和`RocketMQ`的日志文件或者`binlog`不同，`InnoDB`的`redolog`是固定大小的，比如可以配置为一组`4`个文件，每个文件的大小是`1GB`，循环使用，从头开始写，写到末尾就又回到开头循环写（顺序写，节省了随机写磁盘的`IO`消耗）。
 
@@ -292,11 +292,12 @@ _redolog存储方式_
 
 `check_point`理解为尾巴，`write_po`s理解为头部，最开始时，这俩相等，每次增加，`write_pos`就往前推进，黄色部分是有`redolog`日志记录的。
 
-`redolog`日志记录和数据之间，有什么关系呢？
+>`redolog`日志记录和数据之间，有什么关系呢？
+{: .prompt-tip }
 
 这个图里只是日志，另外一部分是相关的数据，如果把数据更新到文件里边去之后，`check_point`就往前推动，也就是说黄色部分记录的是物理数据没有刷盘，如果物理数据刷盘了，标志位`check_point`会往后移动。这个环代表`4`个`G`的日志，是在`4`个文件里边。
 
-如果头部追上了尾巴，说明有很多`MySQL`的数据没有刷盘，全都在`Buffer Pool`（物理内存）里边，
+如果头部追上了尾巴，说明有很多`MySQL`的数据没有刷盘，全都在`Buffer Pool`（物理内存）里边。
 
 `redolog`肯定不会每次都写文件，还有对应的缓存，写`redolog`时，不是立马就写到文件里边去了，`InnoDB`首先将`redolog`放入到`redo log buffer`，然后按一定频率将其刷新到`redo log file`。下列三种情况下会将`redo log buffer`刷新到`redo log file`，
 - `Master Thread`每一秒将`redo log buffer`刷新到`redo log file`
@@ -324,29 +325,38 @@ _redolog存储方式_
 什么时候生效？要做一个提交的操作，提交事务时，先生成`binlog`，通过主从复制机制，还可以复制到从节点。`binlog`先写入内存，什么时候刷盘，由刷盘机制来确定。
 写完`binlog`，`redolog`进入第二阶段（提交阶段），使`redolog`生效，提交事务的工作就做完了。
 
-两阶段提交的原因
+**两阶段提交的原因**
 
 两阶段提交，是为了`binlog`和`redolog`两份日志之间的逻辑一致。
 `redolog`和`binlog`都可以用于表示事务的提交状态，而两阶段提交就是让这两个状态保持逻辑上的一致。
 如果不用两阶段提交，那么有两种可能，要么就是先写完`redolog`，再写`binlog`，或者采用反过来的顺序。
 
 
-为什么用两个阶段，而不是一个阶段就搞定？
+>为什么用两个阶段，而不是一个阶段就搞定？<br/>
 因为有两个日志（`binlog`、`redolog`），如果不用两阶段提交，就会有数据不一致。
+{: .prompt-tip }
 
 `update`语句来做例子，
 假设当前`id=2`的行，字段`c`的值是`0`，再假设执行`update`语句过程中，在写完第一个日志后，第二个日志还没有写完期间发生了`crash`崩溃，会出现什么情况呢？
 1. 先写`redolog`后写`binlog`
-假设在`redolog`写完，`binlog`还没有写完的时候，`MySQL`进程异常重启。
-由于`redolog`写完之后，系统即使崩溃，仍然能够把数据恢复回来，所以恢复后这一行`c`的值是`1`。
-但是由于`binlog`没写完就`crash`了，这时候`binlog`里面就没有记录这个语句。
-因此，之后备份日志的时候，存起来的`binlog`里面就没有这条语句。
-然后你会发现，如果需要用这个`binlog`来恢复临时库的话，由于这个语句的`binlog`丢失，这个临时库就会少了这一次更新，恢复出来的这一行`c`的值就是`0`，与原库的值不同。
+
+    假设在`redolog`写完，`binlog`还没有写完的时候，`MySQL`进程异常重启。
+
+    由于`redolog`写完之后，系统即使崩溃，仍然能够把数据恢复回来，所以恢复后这一行`c`的值是`1`。
+
+    但是由于`binlog`没写完就`crash`了，这时候`binlog`里面就没有记录这个语句。
+
+    因此，之后备份日志的时候，存起来的`binlog`里面就没有这条语句。
+
+    然后你会发现，如果需要用这个`binlog`来恢复临时库的话，由于这个语句的`binlog`丢失，这个临时库就会少了这一次更新，恢复出来的这一行`c`的值就是`0`，与原库的值不同。
 
 2. 先写`binlog`后写`redolog`
-如果在`binlog`写完之后`crash`，由于`redolog`还没写，崩溃恢复以后这个事务无效，所以这一行`c`的值是`0`。
-但是`binlog`里面已经记录了把`c`从`0`改成`1`这个日志。
-所以，在之后用`binlog`来恢复的时候就多了一个事务出来，恢复出来的这一行`c`的值就是`1`，与原库的值不同。
+
+    如果在`binlog`写完之后`crash`，由于`redolog`还没写，崩溃恢复以后这个事务无效，所以这一行`c`的值是`0`。
+
+    但是`binlog`里面已经记录了把`c`从`0`改成`1`这个日志。
+
+    所以，在之后用`binlog`来恢复的时候就多了一个事务出来，恢复出来的这一行`c`的值就是`1`，与原库的值不同。
 
 如果不使用两阶段提交，那么数据库的状态就有可能和用它的日志恢复出来的库的状态不一致。
 
@@ -360,31 +370,32 @@ _两阶段提交_
 也有一个参数来配置
 
 `redolog`占用的空间是一定的，并不会无限增大（可以通过参数设置），写入的时候是顺序写的，所以写入的性能比较高。
+
 当`redolog`空间满了之后，又会从头开始以循环的方式进行覆盖式的写入。
+
 在写入`redolog`的时候也有一个`redo log buffer`，日志什么时候会刷到磁盘是通过`innodb_flush_log_at_trx_commit`参数决定。
 - `innodb_flush_log_at_trx_commit=0`，表示每次事务提交时，不刷盘，都只是把`redolog`留在`redo log buffer`中；
 - `innodb_flush_log_at_trx_commit=1`，表示每次事务提交时都将`redolog`直接持久化到磁盘；
 - `innodb_flush_log_at_trx_commit=2`，表示每次事务提交时都只是把`redolog`写到`page cache`。
 
 除了上面几种机制外，还有其它两种情况会把`redo log buffer`中的日志刷到磁盘，
-1. 定时处理：有线程会定时（每隔`1`秒）把`redo log buffer`中的数据刷盘。
-2. 根据空间处理：`redo log buffer`占用到了一定程度（`innodb_log_buffer_size`设置的值一半），这个时候也会把`redo log buffer`中的数据刷盘。
+- 定时处理：有线程会定时（每隔`1`秒）把`redo log buffer`中的数据刷盘。
+- 根据空间处理：`redo log buffer`占用到了一定程度（`innodb_log_buffer_size`设置的值一半），这个时候也会把`redo log buffer`中的数据刷盘。
 
 #### **redolog & Write-Ahead的本质**
 
-`Write-ahead`，不是针对内存来说的，而是针对磁盘来说的。
-不是说在内存里先写日志，再写数据。
-在磁盘的角度，日志先落盘，数据再落盘。事务里边修改的实际业务数据的落盘。
+`Write-ahead`，不是针对内存来说的，而是针对磁盘来说的。不是说在内存里先写日志，再写数据。在磁盘的角度，日志先落盘，数据再落盘。事务里边修改的实际业务数据的落盘。
 
 这就回到了`IO`的本质，随机写，还是顺序写。
-现在有两类数据，一个是日志数据，一个是业务数据，
-业务数据在磁盘上是分散的，而日志数据写入是顺序的，随机写和顺序写在性能上能相差几百倍。
+
+现在有两类数据，一个是日志数据，一个是业务数据，业务数据在磁盘上是分散的，而日志数据写入是顺序的，随机写和顺序写在性能上能相差几百倍。
 
 `Write-ahead`的本质，一个是顺序写提高性能，另一个是系统宕机，只要日志在，数据就可以恢复。为了提升性能，数据就干脆晚一点写，不是立即写入磁盘，而是由后台线程异步刷入磁盘。这就回到了三高里面的高性能架构部分。
 
 提交事务时，把日志追加到`redolog`的尾部，所有的日志文件都是以追加的形式写入的。
 
-一个事务要修改多张表的多条记录，多条记录分布在不同的`Page`里面，对应到磁盘的不同位置。如果每个事务都直接写磁盘，一次事务提交就要多次磁盘的随机`IO`，性能达不到要求。怎么办？
+>一个事务要修改多张表的多条记录，多条记录分布在不同的`Page`里面，对应到磁盘的不同位置。如果每个事务都直接写磁盘，一次事务提交就要多次磁盘的随机`IO`，性能达不到要求。怎么办？
+{: .prompt-tip }
 
 不写磁盘，在内存中进行事务提交。然后再通过后台线程，异步地把内存中的数据写入到磁盘中。
 但有个问题，机器宕机，内存中的数据还没来得及刷盘，数据就丢失了。
@@ -431,9 +442,10 @@ UPDATE `db`.`t_user` WHERE @1=7 @2='shouyuan' @3=91 @4='1543571201' SET  @1=5 @2
 
 在执行`undo`的时候，仅仅是将数据从逻辑上恢复至事务之前的状态，而不是从物理页面上操作实现的，这一点是不同于`redolog`的。
 
-`undolog`与`redolog`的不同
+>`undolog`与`redolog`的不同
 - `undolog`用于记录事务开始前的状态，用于事务失败时的回滚操作；
 - `redolog`记录事务执行后的状态，用来恢复未写入`data file`的已成功事务更新的数据。
+{: .prompt-tip }
 
 例如，某一事务的事务序号为`T1`，其对数据`c`进行修改，假设`c`的原值是`0`，修改后的值为`1`，那么`undolog`为`<T1, c, 0>`，`redolog`为`<T1, c, 1>`。
 
@@ -467,9 +479,11 @@ UPDATE `db`.`t_user` WHERE @1=7 @2='shouyuan' @3=91 @4='1543571201' SET  @1=5 @2
 `binlog`不存在事务记录，那么这种情况事务还未提交成功，`redolog`也没有`commit`标记，所以会对数据进行回滚。
 4. 执行第六步，事务提交时，数据库崩溃，如果数据库在这个阶段崩溃，那其实事务还是没有提交成功，但是这里并不能像之前一样对数据进行回滚，因为在提交事务前，`binlog`可能成功写入磁盘了，所以这里要根据两种情况来做决定。
 - 一种情况，`binlog`不存在事务记录，主从也是一致的，那么这种情况事务还未提交成功，`redolog`就算刷盘了也没有`commit`标记，所以会对数据进行回滚。
-- 一种情况， 是`binlog`存在数据记录（已经刷盘了），而`binlog`写入后，那么依赖于`binlog`的其它扩展业务（比如从库已经同步了日志进行数据的变更）数据就已经产生了，如果这里进行数据回滚，那么势必就会造成主从数据的不一致，此时不能回滚（虽然事务在数据层还没提交，但在业务侧肯定做提交的动作了，不然不会走到这一步），怎么办呢？
-- 因为提交崩溃了，`redolog`不会有`commit`标志，但是这时也可以根据`redolog`来重做，我们之前说在第六阶段，写入`redolog`，实际上并不完全是这样，
+- 一种情况， 是`binlog`存在数据记录（已经刷盘了），而`binlog`写入后，那么依赖于`binlog`的其它扩展业务（比如从库已经同步了日志进行数据的变更）数据就已经产生了，如果这里进行数据回滚，那么势必就会造成主从数据的不一致，此时不能回滚（虽然事务在数据层还没提交，但在业务侧肯定做提交的动作了，不然不会走到这一步），**怎么办呢？**
+
+>因为提交崩溃了，`redolog`不会有`commit`标志，但是这时也可以根据`redolog`来重做，我们之前说在第六阶段，写入`redolog`，实际上并不完全是这样，
 在高可靠的场景下，如果把`innodb_flush_log_at_trx_commit`设置成`1`，那么`redolog`在`prepare`阶段就要持久化一次，崩溃恢复逻辑是要依赖于`prepare`的`redolog`，再加上`binlog`来恢复的。结合`binlog`的状态，进行`redo`。如果`binlog`存在事务记录，那么就认为事务已经提交了，这里可以根据`binlog`对数据进行重做。其实这个阶段发生崩溃了，最终的事务是没提交成功的，这里应该对数据进行回滚。
+{: .prompt-tip }
 
 ### **如何解决主从服务之间的延时较大的问题**
 
@@ -507,6 +521,7 @@ _读从节点_
 从程序的角度，怎么规避主从复制延迟问题？
 
 刚插入一条数据，然后马上就要去读取，这个时候有可能会读取不到。归根到底是因为主节点写入完之后数据是要复制给从节点的，读不到的原因是复制的时间比较长，也就是说数据还没复制到从节点，你就已经去从节点读取了，肯定读不到。
+
 `MySQL 5.7`的主从复制是多线程了，意味着速度会变快，但是不一定能保证百分百马上读取到，这个问题我们可以有两种方式解决，
 - 业务层面妥协，是否操作完之后马上要进行读取；
 - 对于操作完马上要读出来的，且业务上不能妥协的，我们可以对于这类的读取直接走主库，当然`ShardingJDBC`也是考虑到这个问题的存在，所以给我们提供了一个功能，可以让用户在使用的时候。指定要不要走主库进行读取。
@@ -518,7 +533,9 @@ _读主节点_
 
 ## **Canal实现数据一致性**
 
-什么是`canal`？可以简单理解为一个假的（伪装的）`MySQL Slave`。
+>什么是`canal`？<br/>
+可以简单理解为一个假的（伪装的）`MySQL Slave`。
+{: .prompt-tip }
 
 也是使用`dump`协议同步`binlog`数据，最大的区别在于，没有回放线程，或者说回放线程不一样，不是生成数据，而是进行转发。可以通过`Socket`转发出去，也可以发送`RocketMQ`，支持多种方式的转发。
 
@@ -527,15 +544,16 @@ _读主节点_
 ![Desktop View](/assets/images/20260613/canal_server_mode.png){: width="600" height="300" }
 _修改canal.serverMode_
 
-`canal [kə'næl]`，译意为水道/管道/沟渠。主要用途是基于`MySQL`数据库增量日志解析，提供增量数据订阅和消费。参见[阿里云`DTS`（`Data Transfer Service`）的开源版本](https://github.com/alibaba/canal)。
+`canal [kə'næl]`，译意为水道/管道/沟渠，主要用途是基于`MySQL`数据库增量日志解析，提供增量数据订阅和消费。源码参见[阿里云`DTS`（`Data Transfer Service`）的开源版本](https://github.com/alibaba/canal)。
 
-`canal`的工作原理
+### **`canal`的工作原理**
 - `canal`模拟`MySQL Slave`的交互协议，伪装自己为`MySQL Slave`，向`MySQL Master`发送`dump`请求；
 - `MySQL Master`收到`dump`请求，开始推送`binlog`给`Slave`(也就是`canal`)；
 - `canal`解析`binlog`对象（原始为`byte`流）；
 - `canal`将解析后的对象，根据业务场景，分发到比如`MySQL`、`RocketMQ`或者`ES`中。
 
-`canal`使用场景
+### **`canal`使用场景**
+
 在很多业务情况下，我们都会在系统中加入`redis`缓存做查询优化（比如三级缓存的数据一致性，删除或更新缓存），使用`ES`做全文检索，`HBase/MongoDB`做海量存储（分库分表后，需要做关联查询，或者跨库查询等复杂检索，引入索引和存储分离）。
 
 如果数据库数据发生更新，这时候就需要在业务代码中写一段同步更新`redis`、`ES`、`HBase`的代码。这种数据同步的代码跟业务代码糅合在一起会不太优雅，能不能把这些数据同步的代码抽出来形成一个独立的模块呢，答案是可以的，而且架构上也非常漂亮。
@@ -550,10 +568,11 @@ _canal架构_
 
 图中的`redis`缓存操作服务、`ES`索引操作服务、`HBase`海量存储操作服务，都扮演了`binlog`适配器`adapter`的角色。
 
-一般地，`redis`缓存和`MySQL`数据一致性解决方案
+>一般地，`redis`缓存和`MySQL`数据一致性解决方案
 - 延时双删策略
 - 异步更新缓存（基于订阅`binlog`的延迟更新机制）
 - ...（更多的，比如金融业务需要强一致性做补偿的方案，以后再起一个议题单独聊聊）
+{: .prompt-tip }
 
 ### **基于canal的数据一致性搭建环境**
 
@@ -571,6 +590,20 @@ $ flush privileges;
 
 ![Desktop View](/assets/images/20260613/canal_database.png){: width="600" height="300" }
 _canal数据库表_
+
+准备好`canal-admin`、`canal-server`、`rocketmq-broker`、`rocketmq-namesrv`目录，以及相关配置文件（比如`canal admin`启动脚本、`admin`应用配置、`canal server`实例配置、`rocketmq broker`配置等），
+
+![Desktop View](/assets/images/20260613/canal_admin_startup.png){: width="600" height="300" }
+_canal admin 启动脚本_
+
+![Desktop View](/assets/images/20260613/canal_admin_application_yaml.png){: width="600" height="300" }
+_canal admin 应用配置_
+
+![Desktop View](/assets/images/20260613/canal_server_instance_config.png){: width="600" height="300" }
+_canal server 实例配置_
+
+![Desktop View](/assets/images/20260613/rocketmq_broker_config.png){: width="600" height="300" }
+_rocketmq broker配置_
 
 配置`docker-compose`编排文件，
 
@@ -593,7 +626,7 @@ $ docker-compose --compatibility up -d
 $ docker-compose logs -f
 ```
 
-访问`canal admin`，并且配置实例`/Instance`。如果使用的默认的配置信息，用户名入`admin`，密码输入`123456`即可访问首页。
+访问`canal admin`，并且配置实例`instance`。如果使用的默认的配置信息，用户名入`admin`，密码输入`123456`即可访问首页。
 
 ![Desktop View](/assets/images/20260613/canal_homepage.png){: width="600" height="300" }
 _canal首页_
@@ -637,8 +670,9 @@ _RocketMQ消息明细_
 ### **Canal高可用集群架构**
 
 使用`Cannel`，为了保证系统达到`4`个`9`、甚至`5`个`9`的高可用性，`Canal`服务不能是单节点的，一定是高可用集群的形式存在。
-为什么呢？
-如果`Canal`保存数据不成功，就会导致数据库跟缓存或异构存储（比如`ES`、或者`redis`）数据不一致。
+
+为什么呢？如果`Canal`保存数据不成功，就会导致数据库跟缓存或异构存储（比如`ES`、或者`redis`）数据不一致。
+
 `Canal`单节点用于学习、用于测试是没问题的；但是`Canal`单节点用于生产，会严重影响系统健壮性，稳定性，所以得把`Canal`部署成高可用集群。
 
 `Canal`部署成高可用集群的架构如下，
@@ -657,10 +691,12 @@ _canal集群架构_
 
 为了保证有序性，一份实例(`instance`)同一时间只能由一个`canal client`进行`get/ack/rollback`等远程操作，否则客户端接收无法保证有序。
 
-`Zookeeper`负责协调
-整个`HA`机制的控制，主要是依赖了`zookeeper`的几个特性，`watcher`和`EPHEMERAL`节点（和`session`生命周期绑定），
-同一个集群里边的`Canal server`，需要去创建和监听属于`Server`的唯一的`znode`节点，成功则`running`，失败则`standby`；
-同一个集群里边的`Canal client`, 需要去创建和监听属于`Client`的唯一的`znode`节点，成功则`running`，失败则`standby`。
+**`Zookeeper`负责协调**
+
+整个`HA`机制的控制，主要是依赖了`zookeeper`的几个特性，`watcher`和`EPHEMERAL`节点（和`session`生命周期绑定）。
+- 同一个集群里边的`Canal server`，需要去创建和监听属于`Server`的唯一的`znode`节点，成功则`running`，失败则`standby`；
+- 同一个集群里边的`Canal client`, 需要去创建和监听属于`Client`的唯一的`znode`节点，成功则`running`，失败则`standby`。
+
 `standby`的空闲角色，一直监听唯一的`znode`节点过期状态，随时准备去争抢转正机会。
 
 #### **Canal高可用Server的协作流程**
@@ -675,9 +711,9 @@ _canal集群架构_
 
 ### **Canal的核心角色**
 
-再理解一下`Canal`的三大核心角色。
+再理解一下`Canal`的核心角色。
 
-#### **角色1：canal server**
+#### **canal server**
 
 可以简单地把`Canal`理解为一个用来同步增量数据的一个工具。我们看一张官网提供的示意图，
 
@@ -685,6 +721,7 @@ _canal集群架构_
 _canal flow_
 
 `Canal`的工作原理，就是把自己伪装成`MySQL Slave`，模拟`MySQL Slave`的交互协议向`MySQL Master`发送`dump`协议，`MySQL Master`收到`Canal`发送过来的`dump`请求，开始推送`binlog`给`Canal`，然后`Canal`解析`binlog`，再发送到存储目的地，比如`MySQL`、`RocketMQ`、`Kafka`、`ES`等。
+
 因为在`TCP`模式下，一个`instance`只能有一个`Canal client`订阅，即使同时有多个`Canal client`订阅相同的`instance`，也只会有一个`Canal client`成功获取`binlog`，所以`Canal server`写死`clientId = 1001`，
 1. 也正是因为一个`instance`只有一个`Canal client`，所以`Canal server`将`binlog`位点信息维护在了`instance`级别，即`conf/content/meta.dat`文件中
 2. 在`TCP`模式下，如果`Canal client`想重新获取以前的`binlog`，只能通过修改`Canal server`的`initial position`配置，并重启服务来达到目的
@@ -709,7 +746,7 @@ _canal配置serverMode_
 2. 将`first position`赋值给`last position`保存在内存中
 3. 将`schema`缓存到`conf/content/h2.mv.db`文件中
 
-#### **角色2：canal client**
+#### **canal client**
 
 `canal.serverMode`的服务模式有`tcp`、`kafka`、`rocketMQ`、`rabbitMQ`。默认情况下，是`tcp`，就是开启一个`Netty`服务，发送`binlog`到`Client`。
 
@@ -726,7 +763,7 @@ _canal配置serverMode_
 - `canal client`收到`canal server`的数据之后，可以发送`ack`确认`last position`的同步位置。
 - `canal server`在收到`canal client`确认请求之后，更新内存中的`last position`，并同步保存到`conf/content/meta.dat`文件中，在`logs/content/meta.log`文件中打印日志
 
-#### **角色3：canal instance**
+#### **canal instance**
 
 `canal server`仅仅是保姆角色，真正完成解析`binlog`日志、`binlog`日志过滤、`binlog`日志转储、位点元数据管理等核心功能，是由`canal instance`角色完成。
 
@@ -748,19 +785,19 @@ _canal instance架构图_
 - 以上等等等需求就是`EventSink`需要解决的问题域。
 3. `EventStore`组件
 - 用来存储经`canal`转换的数据，被`Canal Client`进行消费的数据，目前`Canal`只提供了基于内存的存储实现。
-4. `CanalMetaManager`组件
-元数据存储管理器。
-在`Canal`中，最基本的元数据至少应该包含`EventParse`组件解析的位点与消费端的消费位点。
-`Canal Server`重启后，要能从上一次未同步位置开始同步，否则会丢失数据。
+4. `CanalMetaManager`组件（元数据存储管理器）
+- 在`Canal`中，最基本的元数据至少应该包含`EventParse`组件解析的位点与消费端的消费位点。
+- `Canal Server`重启后，要能从上一次未同步位置开始同步，否则会丢失数据。
 
-#### **角色4：canal cluster集群**
+#### **canal cluster集群**
 
 多个`canal server`，可以在创建的时候，归属到一个集群`cluster`下边。
+
 一个集群`cluster`下边，同时只有一个`cannel server running`，其他的`standby`，实现高可用。
 
-#### **角色5：canal admin**
+#### **canal admin**
 
-1. 通过图形化界面管理配置参数。
+1. 通过图形化界面管理配置参数
 2. 动态启停`Server`和`Instance`
 3. 查看日志信息
 

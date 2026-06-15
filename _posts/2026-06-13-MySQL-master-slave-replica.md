@@ -3,7 +3,7 @@ title: MySQL主从复制，以及数据一致性
 date: 2026-06-13 18:00:00 +0800
 categories: [微服务, 存储]
 tags: [微服务, 后端, 存储, MySQL]
-music-id: 2734272059
+music-id: 2051536817
 ---
 
 ## **序言**

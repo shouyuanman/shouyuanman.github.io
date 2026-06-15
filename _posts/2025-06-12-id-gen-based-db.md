@@ -1,8 +1,8 @@
 ---
 title: ID生成器（简单实用型，适用于小规模应用）
 date: 2025-06-12 17:18:00 +0800
-categories: [后端, ID生成器]
-tags: [后端, ID生成器]
+categories: [微服务, ID生成器]
+tags: [微服务, 后端, ID生成器]
 music-id: 2703621578
 ---
 

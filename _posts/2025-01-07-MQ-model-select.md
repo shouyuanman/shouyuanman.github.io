@@ -1,8 +1,8 @@
 ---
 title: MQ选型
 date: 2025-01-07 10:42:15 +0800
-categories: [后端, MQ]
-tags: [后端, MQ]
+categories: [微服务, MQ]
+tags: [微服务, 后端, MQ]
 music-id: 1893658267
 ---
 

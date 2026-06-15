@@ -1,8 +1,8 @@
 ---
 title: MySQL 索引优化
 date: 2024-12-18 16:28:30 +0800
-categories: [后端, MySQL]
-tags: [后端, MySQL]
+categories: [微服务, 存储]
+tags: [微服务, 后端, 存储, MySQL]
 music-id: 2116852179
 ---
 

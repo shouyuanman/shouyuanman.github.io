@@ -1,8 +1,8 @@
 ---
 title: 开始cs231n课程
 date: 2026-05-02 18:16:10 +0800
-categories: [AI, cs231n]
-tags: [cs231n, 计算机视觉, 机器学习, 深度学习]
+categories: [AI, CV]
+tags: [AI, cs231n, 计算机视觉, 机器学习, 深度学习]
 music-id: 2020901943
 ---
 

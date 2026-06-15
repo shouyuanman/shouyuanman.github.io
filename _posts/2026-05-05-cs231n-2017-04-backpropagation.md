@@ -1,8 +1,8 @@
 ---
 title: 反向传播
 date: 2026-05-05 10:00:00 +0800
-categories: [AI, cs231n]
-tags: [cs231n, 计算机视觉, 机器学习, 深度学习]
+categories: [AI, CV]
+tags: [AI, cs231n, 计算机视觉, 机器学习, 深度学习]
 music-id: 1395381349
 ---
 

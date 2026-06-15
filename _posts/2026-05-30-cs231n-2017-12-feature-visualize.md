@@ -1,8 +1,8 @@
 ---
 title: 特征可视化、倒置、对抗样本
 date: 2026-05-30 16:00:00 +0800
-categories: [AI, cs231n]
-tags: [cs231n, 计算机视觉, 机器学习, 深度学习]
+categories: [AI, CV]
+tags: [AI, cs231n, 计算机视觉, 机器学习, 深度学习]
 music-id: 2734272059
 ---
 

@@ -1,8 +1,8 @@
 ---
 title: 本地搭建分布式微服务基础环境（一键启动）
 date: 2025-07-20 12:00:00 +0800
-categories: [环境部署手顺, 微服务]
-tags: [后端, 分布式微服务, vagrant, virtualbox]
+categories: [环境部署手顺, 微服务相关]
+tags: [微服务, 后端, vagrant, virtualbox]
 music-id: 537616
 ---
 

@@ -1,8 +1,8 @@
 ---
 title: 白话MySQL分库分表
 date: 2025-06-28 16:06:00 +0800
-categories: [后端, MySQL]
-tags: [后端, MySQL, 分库分表]
+categories: [微服务, 存储]
+tags: [微服务, 后端, 存储, MySQL, 分库分表]
 music-id: 1437233087
 ---
 

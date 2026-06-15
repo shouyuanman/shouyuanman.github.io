@@ -1,8 +1,8 @@
 ---
 title: ShardingJDBC源码实操（基于Apache Shardingsphere 4.1.0）
 date: 2025-06-25 23:56:00 +0800
-categories: [后端, MySQL]
-tags: [后端, MySQL, ShardingJDBC, 分库分表]
+categories: [微服务, 存储]
+tags: [微服务, 后端, 存储, MySQL, ShardingJDBC, 分库分表]
 music-id: 2622861949
 ---
 ## **序言**

@@ -1,8 +1,8 @@
 ---
 title: 玩转Temporal
 date: 2025-10-01 20:02:00 +0800
-categories: [后端, Temporal]
-tags: [后端, 分布式微服务, Temporal, 工作流引擎]
+categories: [微服务, 工作流]
+tags: [微服务, 后端, Temporal, 工作流引擎]
 music-id: 31514407
 ---
 

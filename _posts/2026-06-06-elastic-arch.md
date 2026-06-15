@@ -1,8 +1,8 @@
 ---
 title: ELK架构 (ElasticSearch、Logstash、Kibana)
 date: 2026-06-06 10:00:00 +0800
-categories: [后端, ELK]
-tags: [后端, ELK]
+categories: [微服务, 存储]
+tags: [微服务, 后端, 存储, ELK]
 music-id: 2734272059
 ---
 

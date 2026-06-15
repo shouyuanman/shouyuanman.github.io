@@ -1,8 +1,8 @@
 ---
 title: MySQL 认识索引
 date: 2024-12-18 11:32:10 +0800
-categories: [后端, MySQL]
-tags: [后端, MySQL]
+categories: [微服务, 存储]
+tags: [微服务, 后端, 存储, MySQL]
 music-id: 1369034842
 ---
 

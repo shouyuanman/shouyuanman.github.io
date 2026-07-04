@@ -1,5 +1,5 @@
 ---
-title: Netty应用规划
+title: Netty服务规划
 date: 2026-06-27 09:00:00 +0800
 categories: [微服务, 高并发IO]
 tags: [后端, 微服务, NIO, Reactor, Netty]
@@ -98,7 +98,7 @@ $ cat /proc/sys/net/ipv4/tcp_rmem
 
 假设内存`32G`，按上面的数据理论来推（架构就是数学思维），`30W`就可以使用`3G`内存来做连接管理，没有问题。`300w`就用`10`个`Netty`服务器，`3000w`就用`100`个。亿级高并发`IM`，需要一个很大的`Netty`集群。
 
-![Desktop View](/assets/images/20260627/im_arch.png){: width="500" height="250" }
+![Desktop View](/assets/images/20260627/im_arch.png){: width="700" height="350" }
 _IM集群架构简图_
 
 >对于单台服务器来说，需要打破系统内核的连接数限制配置，才能达到预期效果，否则会由于系统内核的限制报各种错误。

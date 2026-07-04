@@ -38,10 +38,10 @@ _Netty中的Reactor模式示意图_
 - `Netty Channel`与`NIO`原生`Channel`的关系
 {: .prompt-tip }
 
-`NioEventLoop`类型绑定了两大要员——`Thread`、`Java NIO Selector`，
+`NioEventLoop`类型绑定了两大关键元素——`Thread`、`Java NIO Selector`，
 
 ![Desktop View](/assets/images/20260627/nioEventLoop_selector_thread.png){: width="400" height="200" }
-_NioEventLoop的两大要员_
+_NioEventLoop的两大关键元素_
 
 先看一下`Reactor`的`Java NIO Selector`选择器，
 

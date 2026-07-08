@@ -2,7 +2,7 @@
 title: Netty服务规划
 date: 2026-06-27 09:00:00 +0800
 categories: [微服务, 高并发IO]
-tags: [后端, 微服务, NIO, Reactor, Netty]
+tags: [后端, 微服务, 高并发IO, NIO, Reactor, Netty]
 music-id: 3373150034
 ---
 

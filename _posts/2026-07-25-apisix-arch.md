@@ -3,7 +3,7 @@ title: APISIX——南北向流量调度那些事儿
 date: 2026-07-25 19:00:00 +0800
 categories: [微服务, 网关]
 tags: [后端, 微服务, 网关, APISIX]
-music-id: 2111831690
+music-id: 1896505639
 ---
 
 ## **引言**

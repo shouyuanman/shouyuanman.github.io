@@ -3,7 +3,7 @@ title: ByteBuf——Netty定义的NIO ByteBuffer升级组件
 date: 2026-07-05 10:00:00 +0800
 categories: [微服务, 高并发IO]
 tags: [后端, 微服务, 高并发IO, NIO, Reactor, Netty]
-music-id: 3373150034
+music-id: 2671618630
 ---
 
 ## **引言**
